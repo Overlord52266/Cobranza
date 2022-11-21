@@ -1,0 +1,201 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" controllerName="cobranza.controller.PlanillaView2" xmlns="sap.m" xmlns:form="sap.ui.layout.form">
+    <TableSelectDialog
+		id="TableDialogDoc"
+		noDataText="No Products Found"
+		title="Seleccionar Documento"
+		search=".handleSearch"
+        items="{Reporte>/data}"
+		confirm=".handleConfirm"
+		cancel=".handleClose"
+        multiSelect="true"
+		>
+		<ColumnListItem vAlign="Middle">
+			<cells>
+               <Text text="{Reporte>documento}" />
+                <Text text="{Reporte>tipo_doc}" />
+                
+                <Text text="{Reporte>ruc_dni}" />
+                <Text text="{Reporte>cliente}"  />
+                <Text text="{Reporte>moneda}" />
+                <Text text="{Reporte>total_fac}" />
+                <Text text="{Reporte>saldo_pagar}" />
+                <Text text="{Reporte>imp_ret}" />
+                <Text text="{Reporte>fecha_emi}" />
+                <Text text="{Reporte>fecha_ven}" />
+
+               
+                <Text text="{Reporte>cond_pago}" />
+				<ObjectStatus  state="{Reporte>dias_ven_State}" text="{Reporte>dias_ven}" icon="{Reporte>dias_ven_Icon}"  />
+                <ObjectStatus  state="Information" text="" icon="sap-icon://circle-task"  /> 
+
+
+				<Input value="{Reporte>impCobrado}" />
+
+                 <!-- <CheckBox  select="true" enabled="true" valueState="Information" />  -->
+
+
+                <!-- <Text text="Pen" /> -->
+                <!-- sap-icon://border -->
+
+                
+                <!-- <CheckBox  select="true" enabled="true" valueState="Information" /> -->
+                <!-- <Text text="Pen" /> -->
+                <!-- sap-icon://border -->
+              
+
+
+<!-- 
+				<ObjectIdentifier title="{Name}" text="{ProductId}" />
+				<Text text="{SupplierName}" />
+				<Text text="{Width} x {Depth} x {Height} {DimUnit}" />
+				<ObjectNumber
+					number="{WeightMeasure}"
+					unit="{WeightUnit}"
+					state="{
+						path: 'WeightMeasure',
+						formatter: 'sap.m.sample.TableSelectDialog.Formatter.weightState'
+					}" />
+				<ObjectNumber
+					number="{
+						parts:[{path:'Price'},{path:'CurrencyCode'}],
+						type: 'sap.ui.model.type.Currency',
+						formatOptions: {showMeasure: false}
+					}"
+					unit="{CurrencyCode}" /> -->
+			</cells>
+		</ColumnListItem>
+
+       
+
+
+<!-- 
+				<ObjectIdentifier title="{Name}" text="{ProductId}" />
+				<Text text="{SupplierName}" />
+				<Text text="{Width} x {Depth} x {Height} {DimUnit}" />
+				<ObjectNumber
+					number="{WeightMeasure}"
+					unit="{WeightUnit}"
+					state="{
+						path: 'WeightMeasure',
+						formatter: 'sap.m.sample.TableSelectDialog.Formatter.weightState'
+					}" />
+				<ObjectNumber
+					number="{
+						parts:[{path:'Price'},{path:'CurrencyCode'}],
+						type: 'sap.ui.model.type.Currency',
+						formatOptions: {showMeasure: false}
+					}"
+					unit="{CurrencyCode}" /> -->
+		
+
+
+		<columns>
+			<Column demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Documento" />
+				</header>
+			</Column>
+
+            <Column demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Tipo Doc." />
+				</header>
+			</Column>
+
+			<Column
+				minScreenWidth="Desktop"
+                hAlign="Center"
+				demandPopin="true"
+                width="auto">
+				<header>
+					<Text text="RUC/DNI" />
+				</header>
+			</Column>
+ 
+			<Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center"
+                width="auto">
+				<header>
+					<Text text="Cliente" />
+				</header>
+			</Column>
+
+            <Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center"
+                width="auto">
+				<header>
+					<Text text="Mon" />
+				</header>
+			</Column>
+
+            <Column hAlign="Center" minScreenWidth="Desktop" demandPopin="true" width="auto">
+				<header>
+					<Text text="Total Fact" />
+				</header>
+			</Column>
+
+			<Column  minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Saldo Pagar" />
+				</header>
+			</Column>
+
+            <Column
+				minScreenWidth="Desktop"
+                hAlign="Center"
+				demandPopin="true"
+                width="auto">
+				<header>
+					<Text text="Imp de Ret." />
+				</header>
+			</Column>
+
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="F. de Emis." />
+				</header>
+			</Column>
+
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="F. de Vento" />
+				</header>
+			</Column>
+
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Cond. de Pago" />
+				</header>
+			</Column>
+
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Dias Venc." />
+				</header>
+			</Column>
+
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="4rem">
+				<header>
+					<Text text="Agente Ret." />
+				</header>
+			</Column>
+
+            <!-- <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Mon. Pago" />
+				</header>
+			</Column> -->
+
+            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center" width="auto">
+				<header>
+					<Text text="Imp. a Pagar" />
+				</header>
+			</Column>
+
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

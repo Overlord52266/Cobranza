@@ -1,0 +1,110 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" controllerName="Cobranza.omnia.controller.Page2" xmlns="sap.m" xmlns:form="sap.ui.layout.form">
+    <Dialog horizontalScrolling="true" showHeader="true" state="None" stretch="false" title="Registrar Deposito" type="Standard" verticalScrolling="true">
+        <content>
+            <form:Form width="100%" editable="true" visible="true">
+                <form:title/>
+                <form:formContainers>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Planilla" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <!-- <Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    L19-87682 -->
+                                    <Text enabled = "false" text  ="L19-87682" />
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Banco" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox placeholder="Seleccione Banco" change="selectMedPago" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+                                        <items>
+                                            <core:Item text="No definido" enabled="true" key="Transferencia"/>
+                                            <core:Item text="Banco de Crédito del Perú" enabled="true" key="Efectivo"/>
+                                            <core:Item text="Banco Scotiabank" enabled="true" key="Efectivo"/>
+                                            <core:Item text="Banco Interbank" enabled="true" key="Efectivo"/>
+                                            <core:Item text="Bco Internacional de Finanzas" enabled="true" key="Efectivo"/>
+                                            <core:Item text="Banco Continental" enabled="true" key="Efectivo"/>
+                                        </items>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Medio de Pago" items="" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox placeholder="---Seleccionar---" change="selectMedPago" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+                                        <items>
+                                            <core:Item text="Transferencia" enabled="true" key="Transferencia"/>
+                                            <core:Item text="Efectivo" enabled="true" key="Efectivo"/>
+                                        </items>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="{Proyect>/visibleTransferencia}">
+                                <form:label>
+                                    <Label text="Fecha" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <DatePicker
+                                    id="DP112"
+                                    value=""
+                                    width="auto"
+                                    valueFormat="yyyy-MM-dd"
+                                    displayFormat="yyyy-MM-dd"
+                                    change="handleChange"
+                                    />
+
+
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="{Proyect>/visibleTransferencia}">
+                                <form:label>
+                                    <Label text="Número de Operación" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                   <Input />
+                                </form:fields>
+                            </form:FormElement>
+                            <form:FormElement visible="{Proyect>/visibleTransferencia}">
+                                <form:label>
+                                    <Label text="Importe" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input />
+                                </form:fields>
+                            </form:FormElement>
+
+                            <form:FormElement visible="{Proyect>/visibleTransferencia}">
+                                <form:label>
+                                    <Label text="Voucher" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <Input />
+                                </form:fields>
+                            </form:FormElement>
+
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                </form:formContainers>
+                <form:layout>
+                    <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                </form:layout>
+            </form:Form>
+        </content>
+        <beginButton/>
+        <buttons>
+            <Button text="Registrar Pago" type="Emphasized" icon="sap-icon://accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+            <Button text="Cerrar" press="onClosed" type="Reject" icon="sap-icon://decline" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+        </buttons>
+        <customHeader/>
+        <endButton/>
+        <subHeader/>
+    </Dialog>
+</core:FragmentDefinition>

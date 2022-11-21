@@ -1,0 +1,288 @@
+<!-- <mvc:View controllerName="cobranza.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content />
+    </Page>
+</mvc:View> -->
+
+
+<mvc:View 
+controllerName  ="cobranza.controller.ReporteView"
+xmlns:mvc       ="sap.ui.core.mvc" 
+displayBlock    ="true"
+xmlns           ="sap.m"
+xmlns:fb        ="sap.ui.comp.filterbar" 
+xmlns:l         ="sap.ui.layout" 
+xmlns:f			="sap.f"
+xmlns:ui        ="sap.ui.table" 
+xmlns:plugins   ="sap.m.plugins"
+xmlns:core      ="sap.ui.core"
+>
+    <f:DynamicPage id="ReporteView" showFooter="true"  preserveHeaderStateOnScroll="false">
+		<f:title>
+			
+			<f:DynamicPageTitle>
+				<f:heading>
+                    <HBox alignItems="Center" justifyContent="Center" >
+                    <Button type="Back" press="onPressBackMenu" class="" />
+                    <Title wrapping="true" text="Reporte Cuentas por Cobrar" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>    
+                    </HBox>
+					
+				</f:heading>
+				
+				<f:actions>
+					<Button text="" type="Default" press="RegresarPag" icon="sap-icon://home" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+				</f:actions>
+				
+			</f:DynamicPageTitle>
+			
+        </f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					
+					<fb:FilterBar id="filterbar" persistencyKey="myPersKey" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" filterChange=".onFilterChange" filtersDialogClosed="onFiltersDialogClosed">
+							<fb:filterItems>
+								<fb:FilterItem name="Documento" label="Documento">
+									<fb:control>
+										<Input id="InputDocumento" value="{ModelInputs>/inputCorreo}" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto"
+										valueHelpOnly="false" required="false" valueStateText="Invalid entry" />
+									</fb:control>
+								</fb:FilterItem>
+
+								<fb:FilterItem name="Cliente" label="Cliente">
+									<fb:control>
+										<!--<DatePicker id="rangoFechaCreacion" width="12.5rem" value="{ModelInputs>/rangoFechaCreacion}" required="false"-->
+										<!--displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" valueStateText="Invalid entry" enabled="true" visible="true"-->
+										<!--change="_onDateRangeSelectionChange"/> -->
+										<Input id="Cliente" value="{ModelInputs>/RUC}" type="Text" showValueHelp="false" enabled="true" visible="true" width="12.5rem"
+										valueHelpOnly="false" required="false" valueStateText="Invalid entry" />
+									</fb:control>
+								</fb:FilterItem>
+								
+								<fb:FilterItem name="RUC/DNI" label="RUC/DNI">
+									<fb:control>
+										<!--<DatePicker id="rangoFechaCreacion" width="12.5rem" value="{ModelInputs>/rangoFechaCreacion}" required="false"-->
+										<!--displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" valueStateText="Invalid entry" enabled="true" visible="true"-->
+										<!--change="_onDateRangeSelectionChange"/> -->
+										<Input id="InputRucDni" value="{ModelInputs>/RUC}" type="Text" showValueHelp="false" enabled="true" visible="true" width="12.5rem"
+										valueHelpOnly="false" required="false" valueStateText="Invalid entry" />
+									</fb:control>
+								</fb:FilterItem>
+
+
+							</fb:filterItems>
+						</fb:FilterBar>	
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>	
+
+        <Table 
+            items="{Reporte>/data}"
+            width="100%" 
+            fixedLayout     ="Strict"
+			autoPopinMode   ="true"
+            noDataText="No data" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapUiSmallMarginTop">
+                <infoToolbar>
+                    <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+                        <content>
+                            <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </content>
+                    </Toolbar>
+                </infoToolbar>
+                 <dependents>
+			<plugins:ColumnResizer/>
+		</dependents>
+                
+                <headerToolbar>
+                    <OverflowToolbar width="auto" height="36px" design="Transparent" visible="true" enabled="true">
+                        <content>
+                            <Title text="Facturas ({=${Reporte>/data}.length})" titleStyle="Auto" width="auto" textAlign="Begin" visible="true" wrapping="false"/>
+                            <ToolbarSpacer width=""/>
+                            <!--<SearchField placeholder="Busqueda por Cliente" width="15rem" />-->
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                
+               
+                
+                <columns>
+                    <Column width="6rem" hAlign="Center" vAlign="Middle" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Documento" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="4rem" hAlign="Center" vAlign="Middle" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Tipo de Doc." width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <!--<Column width="10rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="Glosa" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                    <!--<Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="Cliente" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                    
+                    <Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Cliente" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <!--<Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="Apellido" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                    
+                    <Column width="5.5rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="RUC/DNI" width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <!--<Column width="6rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="Código SAP" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                    <Column width="3rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Mon" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Total Fac" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Imp Reten." width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <!--<Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="IGV" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                    
+                    <!--<Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="No Gravada" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                    
+                    <Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Pago a Cuenta" width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Saldo Pagar" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="5rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="F. Emisión" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="5rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="F. Vento." width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="auto" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Cond. de Pago" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <Column width="5rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                        <header>
+                            <Text text="Dias Vento." width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        </header>
+                        <footer/>
+                    </Column>
+                    
+                    <!--<Column width="6rem" hAlign="Center" vAlign="Middle" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">-->
+                    <!--    <header>-->
+                    <!--        <Text text="Descuento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                    <!--    </header>-->
+                    <!--    <footer/>-->
+                    <!--</Column>-->
+                </columns>
+                <items>
+                    <ColumnListItem type="Active">
+                        <cells>
+                            <ObjectIdentifier title="{Reporte>documento}" text="" titleActive="false" visible="true"/>
+                            <Text text="{Reporte>tipo_doc}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <!--<Text text="Lapiz Labial" width="auto" maxLines="3" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                            <Text text="{Reporte>cliente}" width="auto" maxLines="3" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <!--<Text text="Castillo Tume" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                            <Text text="{Reporte>ruc_dni}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <!--<Text text="14052022" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                            <Text text="{Reporte>moneda}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{Reporte>total_fac}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{Reporte>imp_ret}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <!--<Text text="13.20" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                            <!--<Text text="25.20" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                            <Text text="{Reporte>pago_cuenta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{Reporte>saldo_pagar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{Reporte>fecha_emi}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{Reporte>fecha_ven}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{Reporte>cond_pago}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <ObjectStatus  state="{Reporte>dias_ven_State}" text="{Reporte>dias_ven}" icon="{Reporte>dias_ven_Icon}"  />
+                            <!--<Text text="10%" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
+                        </cells>
+                 </ColumnListItem>
+                </items>
+            </Table>
+          
+
+
+        </f:content>
+		<!--<f:footer >-->
+		<!--	<OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="true">-->
+		<!--		<content>-->
+		<!--			<ToolbarSpacer width=""/>-->
+		<!--		</content>-->
+		<!--	</OverflowToolbar>-->
+		<!--</f:footer>-->
+	</f:DynamicPage>
+</mvc:View>

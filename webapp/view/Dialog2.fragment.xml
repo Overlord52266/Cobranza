@@ -1,0 +1,187 @@
+<core:FragmentDefinition 
+xmlns:core          ="sap.ui.core" 
+controllerName      ="Cobranza.omnia.controller.Page2" 
+xmlns:upload        ="sap.m.upload"
+xmlns               ="sap.m" 
+xmlns:form          ="sap.ui.layout.form">
+    <Dialog 
+    contentWidth="35rem"
+    contentHeight="auto"
+    horizontalScrolling="true"
+    beforeOpen="beforeOpenDialog2"
+      showHeader="true" state="None"
+       stretch="false" title="Registrar Pago" type="Standard" verticalScrolling="true">
+        <content>
+        
+            
+					<!-- <RadioButton text="Efectivo"        select="SelectEfectivo" selected="true" />
+					<RadioButton text="Transferencia"   select="SelectBancario" />
+			 -->
+
+            <form:Form width="100%" editable="true" visible="true">
+                <form:title />
+                <form:formContainers>
+                    <form:FormContainer visible="true">
+                        <form:formElements>
+
+                             <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Medio de Pago" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <ComboBox id="MedioPago" items="{MedioPago>/data}" placeholder="---Seleccionar---" selectedKey="" change="selectMedPago" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+                                        <items>
+                                        <core:Item text="{MedioPago>text1}" enabled="true" key="{MedioPago>via}"  />
+                                            <!-- <core:Item text="Efectivo" enabled="true" key="Efectivo"  />
+                                            <core:Item text="Transferencia" enabled="true" key="Transferencia"/>
+                                            <core:Item text="Cheque Diferido" enabled="true" key="Cheque Diferido"/> -->
+                                        </items>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+
+                            <form:FormElement visible="true">
+                                <form:label>
+                                    <Label text="Importe a Pagar" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <!-- <Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    L19-87682 -->
+                                    <Input id="ImportePagar" enabled = "false" value="200.00"  />
+                                </form:fields>
+                            </form:FormElement>
+<!-- {Proyect>/ElementBanco} -->
+                            <form:FormElement visible="{Proyect>/ElementBanco}">
+                                <form:label>
+                                    <Label text="Banco" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <!-- <Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    L19-87682 -->
+                                       <ComboBox id="Banco" placeholder="Seleccione Banco" items="{Banco>/data}"  selectedKey="" change="selectBanco" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+                                        <items>
+                                            <core:Item text="{Banco>nombre}" enabled="true" key="{Banco>nombre}"/>
+                                        </items>
+                                    </ComboBox>
+                                </form:fields>
+                            </form:FormElement>
+
+                            <form:FormElement visible="{Proyect>/ElementBanco}">
+                                <form:label>
+                                    <Label text="Cuenta Bancaria" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <!-- <Input type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    L19-87682 -->
+                                       <!-- <Input /> -->
+                                        <ComboBox id="CuentaBancaria" placeholder="Seleccione Cuenta Bancaria" selectedKey="" items="{Cuenta>/data}" change="" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+                                        <items>
+                                            <core:Item text="{Cuenta>bankn}" enabled="true" key="{Cuenta>bankn}"/>
+                                        </items>
+                                    </ComboBox>
+
+                                </form:fields>
+                            </form:FormElement>
+
+                          
+
+                            <form:FormElement visible="{Proyect>/ElementCobro}">
+                                <form:label>
+                                    <Label text="Fecha de Voucher" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                    <DatePicker
+                                    id="DateVoucher"
+                                    width="auto"
+                                    valueFormat="yyyy-MM-dd"
+                                    displayFormat="yyyy-MM-dd"
+                                    change="handleChange"
+                                    />
+
+
+                                </form:fields>
+                            </form:FormElement>
+
+                            <form:FormElement visible="{Proyect>/ElementCobro}">
+                                <form:label>
+                                    <Label  text="Nº de Operación" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                   <Input id="Operacion" />
+                                </form:fields>
+                            </form:FormElement>
+
+                            <form:FormElement visible="{Proyect>/ElementCheque}">
+                                <form:label>
+                                    <Label text="Nº de Cheque" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                </form:label>
+                                <form:fields>
+                                   <Input id="Cheque"/>
+                                </form:fields>
+                            </form:FormElement>
+
+                        </form:formElements>
+                        <form:title/>
+                    </form:FormContainer>
+                </form:formContainers>
+                <form:layout>
+                    <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+                </form:layout>
+            </form:Form>
+
+                                 <upload:UploadSet
+                                    class                   ="sapUiSmallMarginEnd sapUiSmallMarginBegin"
+                                    id                      ="UploadSet3333123"                             
+                                    showIcons               ="true"                             
+                                    fileTypes               ="pdf,PDF,PNG,png,JPG,jpg"
+                                    sameFilenameAllowed     ="true"
+                                    maxFileNameLength       ="100"
+                                    uploadCompleted         ="UploadFinish"
+                                    uploadTerminated        ="UploadFinish"
+                                    maxFileSize             ="200"
+                                    uploadButtonInvisible   ="false"
+                                    uploadEnabled           ="true"
+                                    uploadUrl               ="../../../../upload"
+                                    mode                    ="None"
+                                    items                   ="{Model>/aea}"
+                                    visible                 ="{Proyect>/ElementCobro}"
+                                    selectionChanged        ="onSelectionChange">
+
+                                    <upload:toolbar>
+                                    <OverflowToolbar>
+                                        
+                                        <Label text="Voucher" design="Standard" width="auto" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        <ToolbarSpacer/>
+                                        <upload:UploadSetToolbarPlaceholder />
+                                        
+                                    </OverflowToolbar>
+
+                                    
+
+                                    </upload:toolbar>
+                                <upload:items>
+                                    <upload:UploadSetItem
+                                            fileName="{Model>fileName}"
+                                            mediaType="{Model>mediaType}"
+                                            enabledEdit="false"
+							                visibleEdit="false"
+                                            url="{Model>url}"
+                                            thumbnailUrl="{Model>thumbnailUrl}"
+                                            uploadState="{uploadState}">
+                                        
+                                    </upload:UploadSetItem>
+                                </upload:items>
+                                
+                                </upload:UploadSet>          
+
+        </content>
+        <beginButton/>
+        <buttons>
+            <Button text="Registrar Pago" press="RegistrarPago1" type="Emphasized" icon="sap-icon://accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+            <Button text="Cerrar" press="onClosedPago" type="Reject" icon="sap-icon://decline" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+        </buttons>
+        <customHeader/>
+        <endButton/>
+        <subHeader/>
+    </Dialog>
+</core:FragmentDefinition>

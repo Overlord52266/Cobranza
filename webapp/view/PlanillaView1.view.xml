@@ -1,0 +1,164 @@
+<mvc:View 
+controllerName  ="cobranza.controller.PlanillaView1"
+xmlns:mvc       ="sap.ui.core.mvc" 
+displayBlock    ="true"
+xmlns:core="sap.ui.core"
+xmlns           ="sap.m"
+xmlns:plugins   ="sap.m.plugins" >
+    
+    <Page id="page" title="Planillas de Cobranza"  >
+        <content>
+        <ObjectHeader
+	
+		responsive      ="true"
+		binding         =""
+		icon            ="sap-icon://employee"
+		iconAlt         ="{Name}"
+		intro           ="{Description}"
+		title           ="Sebastian Castillo"
+		showMarkers     ="false"
+		markFlagged     ="true"
+		markFavorite    ="true"
+		backgroundDesign="Translucent"
+		class           ="sapUiResponsivePadding--header" >
+		
+	</ObjectHeader>
+
+        <Table 
+        id              ="idProductsTable"
+		fixedLayout     ="Strict"
+		autoPopinMode   ="true"
+        items           ="{Planilla>/data}"
+		growing         ="true"
+        >
+
+		<dependents>
+			<plugins:ColumnResizer/>
+		</dependents>
+
+        <headerToolbar  >
+			<OverflowToolbar   >
+            	<content>
+                <Title text="" level="H2"/>
+               	<ToolbarSpacer />
+                <Label text="Periodo :" />
+                <!-- <DatePicker
+                id="DP10"
+                value="2021-11"
+                width="auto"
+                valueFormat="yyyy-MM"
+                displayFormat="yyyy-MM"
+                
+                change="handleChange"
+                /> -->
+
+                	<DateRangeSelection
+                    id="DRS4"
+                    displayFormat="MM/yyyy"
+                    valueFormat="MM-yyyy"
+                    width="auto"
+                    change="handleChange"/>
+
+
+				<ToolbarSpacer/>
+                <SearchField   width="auto"/>
+                </content>
+			</OverflowToolbar>
+		</headerToolbar>
+
+
+		<columns>
+
+			<Column
+                hAlign      ="Center"
+				width       ="auto">
+				<Text text  ="Código" />
+			</Column>
+
+			<Column
+				width       ="auto"
+                hAlign      ="Center">
+				<Text text  ="Estado" />
+			</Column>
+
+			<Column
+				width       ="auto"
+				hAlign      ="Center">
+				<Text text  ="Fecha de Emisión" />
+			</Column>
+
+            <!-- <Column
+				width       ="auto"
+				hAlign      ="Center">
+				<Text text  ="Moneda" />
+			</Column> -->
+
+			<Column
+				width="auto"
+				hAlign="Center">
+				<Text text="Importe Total " />
+			</Column>
+
+
+            <Column
+				width="auto"
+				hAlign="Center">
+				<Text text="Conciliado" />
+			</Column>
+
+            <!-- <Column
+				width="auto"
+				hAlign="Center">
+				<Text text="Liquidado" />
+			</Column> -->
+
+		</columns>
+		<items>
+			<ColumnListItem  press="OnPressHeader" vAlign="Middle" type="Navigation">
+				<cells>
+				
+                    <Text
+						text="{Planilla>planilla}" />
+
+					<Text
+						text="{Planilla>status}" />
+                        
+					<Text 
+						text="{Planilla>fecha_emi}" />
+
+                    <!-- <Text
+						text="{Proyect>Moneda}" /> -->
+                      
+
+                     <Text
+						text="{Planilla>importe_cobrado}" />
+
+                    <ObjectStatus
+                    
+                    icon="sap-icon://decline"
+                    state="Error" />
+
+                    <!-- <ObjectStatus
+                    
+                    icon="{Proyect>icon_Liquidado}"
+                    state="{Proyect>state_Conciliado}" /> -->
+
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+
+
+
+
+        </content >
+
+    <footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="Nueva Planilla" icon="sap-icon://add" press="onPress" />
+			</Toolbar>
+		</footer>
+    </Page>
+    
+</mvc:View>

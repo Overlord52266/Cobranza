@@ -1,0 +1,53 @@
+<mvc:View 
+controllerName="cobranza.controller.Menu" 
+xmlns:mvc="sap.ui.core.mvc"
+displayBlock="true" 
+xmlns="sap.m">
+
+		 <App id="app">
+				<Page id="Menu"  title="{i18n>title}"  >
+					<headerContent>
+					<Title />
+					<!--<Button text="Main Screen" class="pruebaasd" type="Emphasized" press="BackPage1" icon="sap-icon://home" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>-->
+				
+					</headerContent>
+					
+					<content>
+						
+						<TileContainer
+						id="container"
+						tileDelete="handleTileDelete"
+						>
+							
+						<StandardTile
+							icon="sap-icon://home-share"
+							press="NavigateCreacionPlanilla"
+							type="None"
+							class="tile1"
+							title="Creación Planilla"
+							/>
+							
+						<StandardTile
+							press="NavigateReporteCuentas"
+							class="tile2"
+							icon="sap-icon://home-share"
+							type="None"
+							title="Reporte Cuentas por Cobrar"
+							/>	
+							
+						
+							
+						</TileContainer>
+
+						<!-- <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Right click to open in new tab"
+						subheader="Link tile" press="press" url="https://www.sap.com/">
+						<TileContent>
+							<ImageContent src="sap-icon://home-share" />
+						</TileContent>
+					</GenericTile> -->
+						
+					</content>
+				</Page>
+		 </App>
+
+</mvc:View>
