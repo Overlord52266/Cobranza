@@ -24,6 +24,7 @@ xmlns:core      ="sap.ui.core"
 			
 			<f:DynamicPageTitle>
 				<f:heading>
+
                     <HBox alignItems="Center" justifyContent="Center" >
                     <Button type="Back" press="onPressBackMenu" class="" />
                     <Title wrapping="true" text="Reporte Cuentas por Cobrar" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>    
@@ -38,6 +39,7 @@ xmlns:core      ="sap.ui.core"
 			</f:DynamicPageTitle>
 			
         </f:title>
+        
 		<f:header>
 			<f:DynamicPageHeader pinnable="true">
 				<f:content>
@@ -56,8 +58,15 @@ xmlns:core      ="sap.ui.core"
 										<!--<DatePicker id="rangoFechaCreacion" width="12.5rem" value="{ModelInputs>/rangoFechaCreacion}" required="false"-->
 										<!--displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy" valueStateText="Invalid entry" enabled="true" visible="true"-->
 										<!--change="_onDateRangeSelectionChange"/> -->
-										<Input id="Cliente" value="{ModelInputs>/RUC}" type="Text" showValueHelp="false" enabled="true" visible="true" width="12.5rem"
-										valueHelpOnly="false" required="false" valueStateText="Invalid entry" />
+										<!-- <Input id="Cliente" value="{ModelInputs>/RUC}" type="Text" showValueHelp="false" enabled="true" visible="true" width="12.5rem"
+										valueHelpOnly="false" required="false" valueStateText="Invalid entry" /> -->
+
+                                        <ComboBox id="cliente" placeholder="Seleccione un Cliente" selectedKey="" items="{Cliente>/data}"  editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+                                        <items>
+                                            <core:Item text="{Cliente>cliente}" enabled="true" key="{Cliente>ruc_dni}"/>
+                                        </items>
+                                        </ComboBox>
+
 									</fb:control>
 								</fb:FilterItem>
 								
@@ -263,7 +272,7 @@ xmlns:core      ="sap.ui.core"
                             <!--<Text text="13.20" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
                             <!--<Text text="25.20" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
                             <Text text="{Reporte>pago_cuenta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="{Reporte>saldo_pagar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>saldo_pagar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <Text text="{Reporte>fecha_emi}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <Text text="{Reporte>fecha_ven}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <Text text="{Reporte>cond_pago}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>

@@ -2,11 +2,11 @@
 controllerName  ="cobranza.controller.PlanillaView1"
 xmlns:mvc       ="sap.ui.core.mvc" 
 displayBlock    ="true"
-xmlns:core="sap.ui.core"
+xmlns:core		="sap.ui.core"
 xmlns           ="sap.m"
 xmlns:plugins   ="sap.m.plugins" >
     
-    <Page id="page" title="Planillas de Cobranza"  >
+    <Page id="page" title="Planillas de Cobranza" showNavButton="true" navButtonPress="OnBackMainMenu" >
         <content>
         <ObjectHeader
 	
@@ -15,7 +15,7 @@ xmlns:plugins   ="sap.m.plugins" >
 		icon            ="sap-icon://employee"
 		iconAlt         ="{Name}"
 		intro           ="{Description}"
-		title           ="Sebastian Castillo"
+		title           ="{UserLogin>/data/name/givenName} {UserLogin>/data/name/familyName}"
 		showMarkers     ="false"
 		markFlagged     ="true"
 		markFavorite    ="true"
@@ -25,7 +25,7 @@ xmlns:plugins   ="sap.m.plugins" >
 	</ObjectHeader>
 
         <Table 
-        id              ="idProductsTable"
+        id              ="TablePlanilla"
 		fixedLayout     ="Strict"
 		autoPopinMode   ="true"
         items           ="{Planilla>/data}"
@@ -53,15 +53,15 @@ xmlns:plugins   ="sap.m.plugins" >
                 /> -->
 
                 	<DateRangeSelection
-                    id="DRS4"
-                    displayFormat="MM/yyyy"
-                    valueFormat="MM-yyyy"
-                    width="auto"
-                    change="handleChange"/>
+                    id				="DRS4"
+                    displayFormat	="MM/yyyy"
+                    valueFormat		="MM-yyyy"
+                    width			="auto"
+                    change			="handleChange"/>	
 
 
 				<ToolbarSpacer/>
-                <SearchField   width="auto"/>
+                <SearchField   liveChange="SearchPlanilla" width="auto"/>
                 </content>
 			</OverflowToolbar>
 		</headerToolbar>
@@ -106,6 +106,12 @@ xmlns:plugins   ="sap.m.plugins" >
 				<Text text="Conciliado" />
 			</Column>
 
+			<Column
+				width="auto"
+				hAlign="Center">
+				<Text text="Observación" />
+			</Column>
+
             <!-- <Column
 				width="auto"
 				hAlign="Center">
@@ -120,8 +126,13 @@ xmlns:plugins   ="sap.m.plugins" >
                     <Text
 						text="{Planilla>planilla}" />
 
-					<Text
-						text="{Planilla>status}" />
+					<!-- <Text
+						text="{Planilla>status}" /> -->
+
+					<ObjectStatus
+					text="{Planilla>status}"
+					icon="{Planilla>icon}"
+					state="{Planilla>state}" />
                         
 					<Text 
 						text="{Planilla>fecha_emi}" />
@@ -130,13 +141,20 @@ xmlns:plugins   ="sap.m.plugins" >
 						text="{Proyect>Moneda}" /> -->
                       
 
-                     <Text
-						text="{Planilla>importe_cobrado}" />
+                     <!-- <Text
+						text="{Planilla>importe_cobrado}" /> -->
+
+					 <ObjectNumber
+					number="{Planilla>importe_cobrado}"
+					unit="PEN" />	
 
                     <ObjectStatus
                     
                     icon="sap-icon://decline"
                     state="Error" />
+
+					<Text 
+						text="{Planilla>observ}"  wrapping="true"/>
 
                     <!-- <ObjectStatus
                     

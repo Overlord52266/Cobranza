@@ -16,7 +16,9 @@ sap.ui.define([
             },
             onAfterRendering : function (){
 
-			 this.ConsultaPrincipal();
+			//  this.ConsultaPrincipal();
+             var oRouter =sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.getRoute("RouteMenu").attachPatternMatched( this.ConsultaPrincipal, this);	
 		
             },
 

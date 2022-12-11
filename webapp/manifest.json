@@ -37,7 +37,7 @@
                     "action": "Display",
                     "title": "{{flpTitle}}",
                     "subTitle": "{{flpSubtitle}}",
-                    "icon": ""
+                    "icon": "sap-icon://loan"
                 }
             }
         }
@@ -130,6 +130,16 @@
                 "preload": true
             },
             "DetallePlanilla": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "preload": true
+            },
+            "Cliente": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {},
+                "preload": true
+            },
+            "Archivos": {
                 "type": "sap.ui.model.json.JSONModel",
                 "settings": {},
                 "preload": true

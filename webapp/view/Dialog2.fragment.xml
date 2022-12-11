@@ -3,12 +3,14 @@ xmlns:core          ="sap.ui.core"
 controllerName      ="Cobranza.omnia.controller.Page2" 
 xmlns:upload        ="sap.m.upload"
 xmlns               ="sap.m" 
-xmlns:form          ="sap.ui.layout.form">
+xmlns:form          ="sap.ui.layout.form"
+xmlns:u             ="sap.ui.unified">
     <Dialog 
     contentWidth="35rem"
     contentHeight="auto"
     horizontalScrolling="true"
     beforeOpen="beforeOpenDialog2"
+    afterOpen="afterOpenDialog2"
       showHeader="true" state="None"
        stretch="false" title="Registrar Pago" type="Standard" verticalScrolling="true">
         <content>
@@ -93,16 +95,17 @@ xmlns:form          ="sap.ui.layout.form">
                                     <DatePicker
                                     id="DateVoucher"
                                     width="auto"
-                                    valueFormat="yyyy-MM-dd"
-                                    displayFormat="yyyy-MM-dd"
+                                    valueFormat="dd/MM/yyyy"
+                                    displayFormat="dd/MM/yyyy"
                                     change="handleChange"
+                                    maxDate="new Date()"
                                     />
 
 
                                 </form:fields>
                             </form:FormElement>
 
-                            <form:FormElement visible="{Proyect>/ElementCobro}">
+                            <form:FormElement visible="{Proyect>/ElementOperacion}">
                                 <form:label>
                                     <Label  text="Nº de Operación" design="Standard" width="100%" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </form:label>
@@ -129,9 +132,9 @@ xmlns:form          ="sap.ui.layout.form">
                 </form:layout>
             </form:Form>
 
-                                 <upload:UploadSet
+                                 <!-- <upload:UploadSet
                                     class                   ="sapUiSmallMarginEnd sapUiSmallMarginBegin"
-                                    id                      ="UploadSet3333123"                             
+                                    id                      ="UploadSetDocumentos"                             
                                     showIcons               ="true"                             
                                     fileTypes               ="pdf,PDF,PNG,png,JPG,jpg"
                                     sameFilenameAllowed     ="true"
@@ -141,16 +144,22 @@ xmlns:form          ="sap.ui.layout.form">
                                     maxFileSize             ="200"
                                     uploadButtonInvisible   ="false"
                                     uploadEnabled           ="true"
-                                    uploadUrl               ="../../../../upload"
                                     mode                    ="None"
-                                    items                   ="{Model>/aea}"
                                     visible                 ="{Proyect>/ElementCobro}"
-                                    selectionChanged        ="onSelectionChange">
+                                    items                   ="{Documentos>/data}"
+                                    selectionChanged        ="selectionChangedDocumentos">
 
                                     <upload:toolbar>
                                     <OverflowToolbar>
                                         
-                                        <Label text="Voucher" design="Standard" width="auto" required="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                        <Label 
+                                        text            ="Voucher" 
+                                        design          ="Standard" 
+                                        width           ="auto" 
+                                        required        ="true" 
+                                        textAlign       ="Begin" 
+                                        textDirection   ="Inherit" 
+                                        visible         ="true"/>
                                         <ToolbarSpacer/>
                                         <upload:UploadSetToolbarPlaceholder />
                                         
@@ -160,24 +169,60 @@ xmlns:form          ="sap.ui.layout.form">
 
                                     </upload:toolbar>
                                 <upload:items>
+
                                     <upload:UploadSetItem
-                                            fileName="{Model>fileName}"
-                                            mediaType="{Model>mediaType}"
-                                            enabledEdit="false"
-							                visibleEdit="false"
-                                            url="{Model>url}"
-                                            thumbnailUrl="{Model>thumbnailUrl}"
-                                            uploadState="{uploadState}">
+                                            fileName    ="asdqweqweqweqw"
+                                            enabledEdit ="false"
+							                visibleEdit ="false"
+                                            url         ="https://mail.google.com/mail/u/0/#inbox">
                                         
                                     </upload:UploadSetItem>
                                 </upload:items>
                                 
-                                </upload:UploadSet>          
+                                </upload:UploadSet>           -->
+
+
+
+                                	<!-- <u:FileUploader id="UploadSetDocumentos" multiple="true" name="myFileUpload" sameFilenameAllowed="true" icon="sap-icon://upload" change="handleUploadComplete2"
+										uploadUrl="upload/" buttonOnly="false" fileType="xlsx" buttonText="Importar" tooltip=""
+										visible="{Proyect>/ElementCobro}"/> -->
+
+                                    <List 
+                                        id			="ListArchivos"
+                                        headerText	="Archivos({${Adjuntos>/response}}.length)" 
+                                        noDataText	="Ingrese un Archivo"
+                                        mode		="Delete"
+                                        delete      ="deleteListArchivos"
+                                        visible     ="{Proyect>/ElementCobro}"
+                                        class       ="sapUiSmallMargin"
+                                        width       ="auto"
+                                        items		="{Archivos>/data}" >
+                                        <headerToolbar>
+                                            <OverflowToolbar>
+                                                <Label
+                                                    text="Voucher" required="true" />
+                                                <ToolbarSpacer />
+                                                <u:FileUploader id="UploadSetDocumentos"  width  ="auto" multiple="true" name="myFileUpload" sameFilenameAllowed="true" icon="sap-icon://upload" change="handleUploadAdjuntos"
+                                                uploadUrl="upload/" buttonOnly="true" fileType="png,PNG,JPG,jpg,pdf,PDF" buttonText="Importar" tooltip=""
+                                                />
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+
+                                        <CustomListItem>
+                                            <HBox alignItems="Center" >
+                                                <core:Icon size="2rem" src="sap-icon://document-text" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+                                                <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"  >
+                                                    <Link text="{Archivos>Name}" press = "onPressDescargar" />
+                                                </VBox>
+                                            </HBox>
+                                        </CustomListItem>
+                                        </List>
 
         </content>
         <beginButton/>
         <buttons>
-            <Button text="Registrar Pago" press="RegistrarPago1" type="Emphasized" icon="sap-icon://accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+            <Button id="RegistrarPago" text="Registrar Pago"  press="RegistrarPago1" type="Emphasized" icon="sap-icon://accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+            <Button id="ActualizarPago" text="Actualizar Pago" press="onPressActualizarPago" type="Accept" icon="sap-icon://edit" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
             <Button text="Cerrar" press="onClosedPago" type="Reject" icon="sap-icon://decline" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
         </buttons>
         <customHeader/>

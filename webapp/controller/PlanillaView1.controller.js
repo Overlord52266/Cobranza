@@ -13,20 +13,25 @@ sap.ui.define([
         let hostname = location.hostname;
         return BaseController.extend("cobranza.controller.PlanillaView1", {
             onInit: function () {
-                this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                
             },
-            onAfterRendering : function (){
+            onAfterRendering :  function (){
                 const that  = this ;	
                 const oView	= this.getView();
                 // var Proyect = oView.getModel("Proyect");
 
-                var oRouter = that.getRouter();
-				oRouter.getRoute("RoutePlanillaView1").attachMatched(that.ConsultaPlanilla, that);	
+
+                if(! hostname.includes("port")) {
+                    if(!UriDomain.includes("~")){
+                    UriDomain =  jQuery.sap.getModulePath("cobranza")+UriDomain;
+                    }
+                }
+                    
+                var oRouter =sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.getRoute("RoutePlanillaView1").attachPatternMatched( that.ConsultaPlanilla, that);	
 
 
-                // that.ConsultaPlanilla();
-
-
+               
 
                 // let dataInitial = 
                 // {
@@ -46,6 +51,11 @@ sap.ui.define([
                 // that.consultaStatus();
                 // that.consultaBancoCuenta();
             },
+            OnBackMainMenu : function (){
+
+                this.getRouter().navTo("RouteMenu");    
+
+            },
 
             OnPressHeader : function (oEvent){
                 const that              = this ;	
@@ -56,7 +66,7 @@ sap.ui.define([
                 let DataDetallePlanilla = DetallePlanilla.setProperty("/data",Planilla.DetallePlanilla);
                 DetallePlanilla.setProperty("/dataPrincipal",Planilla);
 
-                this.oRouter.navTo("RoutePlanillaView2");    
+                this.getRouter().navTo("RoutePlanillaView2");    
             },
 
             onPress : async function (){
@@ -67,39 +77,21 @@ sap.ui.define([
                 const UserLogin       = oView.getModel("UserLogin"); 
                 const InfoUserLogin   = UserLogin.getProperty("/data"); 
                 const CodVendedor     = InfoUserLogin["urn:sap:cloud:scim:schemas:extension:custom:2.0:User"].attributes[0].value ;
-                // const UriCorrelativo  = [{uri:UriDomain+"PlanillasSet?$filter=get eq 'X'"}];
-                // let ResultCorrelativo = await Service.doGetMultiple(UriCorrelativo);
+                const DataPlanillas   = Planilla.getProperty("/data")
 
-                // get
-                // : 
-                // ""
-                // num_act
-                // : 
-                // "00001"
-                // num_sig
-                // : 
-                // "2 "
-                // planilla
-                // : 
-                // "LI23-00001"
-                // pref
-                // : 
-                // "LI23"
+                const PlanillasVigentes= DataPlanillas.filter(obj=> obj.status === "Vigente");
 
-                // ResultCorrelativo.d.results[0].num_sig
-                // ResultCorrelativo.d.results[0].pref
-                // let PrefijoPlanilla       = ResultCorrelativo[0].d.results[0].pref;
-                // let FormatPlanillaNumeral = (parseFloat(ResultCorrelativo[0].d.results[0].num_sig+2)).toString().padStart(5, "0");
-                // let Correlativo           = PrefijoPlanilla+"-"+FormatPlanillaNumeral
 
-                // update
-                // cod_vendedor
-                // planilla
+                if(PlanillasVigentes.length !== 0){
+                    MessageBox.error("Nose puede crear una Planilla,ya que existe una Planilla Vigente");
+                    return ; 
+                }
 
                 const data =
                 {
                     "crea":"X",
                     "cod_vendedor":CodVendedor,
+                    "status":"V",
                     "DetallePlanillaSet":[
                     {
                     "status"        :"",
@@ -110,6 +102,7 @@ sap.ui.define([
                     "documento"     :"",
                     "tipo_doc"      :"",
                     "cliente"       :"",
+                    "cod_cliente"   :"",
                     "moneda"        :"",
                     "total_doc"     :"",
                     "importe_cobrado":"",
@@ -143,7 +136,7 @@ sap.ui.define([
                     ]
                     };
 
-
+ 
 
 
                 let token='';
@@ -173,22 +166,23 @@ sap.ui.define([
 				success: async function (data, textStatus, jqXHR) {
 					
                     const NumeroPlani = data.d.ResultadosSet.results[1].planilla ;
-                    await that.ConsultaPlanilla();
+                    await that.ConsultaPlanilla(NumeroPlani);
 
-                    let DataPlanillas = Planilla.getProperty("/data");
-                    let PlanillaFilter = DataPlanillas.filter(obj=> obj.planilla === NumeroPlani);
+                    // let DataPlanillas = Planilla.getProperty("/data");
+                    // let PlanillaFilter = DataPlanillas.filter(obj=> obj.planilla === NumeroPlani);
 
-                    if(PlanillaFilter.length !== 0){
-                        DetallePlanilla.setProperty("/dataPrincipal", PlanillaFilter);
-                    }
+                    // if(PlanillaFilter.length !== 0){
+                    //     DetallePlanilla.setProperty("/dataPrincipal", PlanillaFilter[0]);
+                    // }
                     
+                    // DetallePlanilla.setProperty("/data",[]);
 
 
                     MessageBox.success("Se creó la Planilla "+NumeroPlani, {
                     actions: [MessageBox.Action.OK],
                     emphasizedAction: MessageBox.Action.OK,
                     onClose: function (sAction) {
-                        that.oRouter.navTo("RoutePlanillaView2");
+                        that.getRouter().navTo("RoutePlanillaView2");
                     }
                 });	
 
@@ -203,6 +197,20 @@ sap.ui.define([
                 // MessageBox.success("Se creó la Planilla LI19-87704");
                 
             },
+            SearchPlanilla : function (oEvent) {
+            const that            = this ;	
+            const oView		      = this.getView(); 
+            let Search = oEvent.getSource().getValue();
+
+            var aFilter1=new sap.ui.model.Filter( "documento", sap.ui.model.FilterOperator.Contains, Search) ;
+            var aFilter2=new sap.ui.model.Filter( "ruc_dni", sap.ui.model.FilterOperator.Contains, Search) ;
+            var aFilter3=new sap.ui.model.Filter( "cliente", sap.ui.model.FilterOperator.Contains, Search) ;
+
+            oView.byId("TablePlanilla").getBinding("items").filter([aFilter1,aFilter2,aFilter3]);
+            
+
+
+            }
 
 
         });

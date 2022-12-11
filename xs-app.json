@@ -8,25 +8,37 @@
       "authenticationType": "none",
       "destination": "ui5"
     },
+
     {
       "source": "^/test-resources/(.*)$",
       "target": "/test-resources/$1",
       "authenticationType": "none",
       "destination": "ui5"
     },
+
+    {
+      "source": "^/service/scim/(.*)$",
+      "destination": "API-USER-IAS",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+
     {
       "source": "^/sap/(.*)$",
       "destination": "LIFE-DEV-110",
       "authenticationType": "xsuaa",
       "csrfProtection": false
-  },
-  {
-    "source": "^/API-USER-IAS/(.*)$",
-    "target":"$1",
-    "destination": "API-USER-IAS",
-    "authenticationType": "xsuaa",
-    "csrfProtection": false
-  },
+    },
+
+    {
+      "source": "^/uploadfile/(.*)$",
+      "destination": "API-DOCUMENTS",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+
+    
+
     {
       "source": "^(.*)$",
       "target": "$1",

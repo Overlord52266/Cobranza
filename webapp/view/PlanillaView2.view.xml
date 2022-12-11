@@ -7,7 +7,7 @@ xmlns           ="sap.m"
 xmlns:plugins   ="sap.m.plugins" >
    
    <Page 
-					id				=	"Page2" 
+					id				=	"page" 
 					title			=	""
 					showNavButton	=	"true"
 					navButtonPress	=	"onNavBack">
@@ -23,7 +23,7 @@ xmlns:plugins   ="sap.m.plugins" >
 
                                 <ObjectAttribute 
 									title	=	"Estado" 
-									text	=	"Vigente"
+									text	=	"{DetallePlanilla>/dataPrincipal/status}"
 									active	=	"true"
 									press	=	"onNavBack"/>
 
@@ -40,7 +40,7 @@ xmlns:plugins   ="sap.m.plugins" >
 									active	=	"true"
 									press	=	"onNavBack"/>      -->
                                 <ObjectAttribute 
-									title	=	"Importe a Total" 
+									title	=	"Importe Total" 
 									text	=	"{DetallePlanilla>/dataPrincipal/importe_cobrado}"
 									active	=	"true"
 									press	=	"onNavBack"/> 
@@ -68,6 +68,9 @@ xmlns:plugins   ="sap.m.plugins" >
 					key="All" >
 					 <Table id="idDetails123"
                             fixedLayout="Strict"
+                            selectionChange="selectionChangePagosPlanilla"
+                            mode="None"
+
                             items="{DetallePlanilla>/data}"
                             autoPopinMode="true"
                             contextualWidth="Auto"
@@ -82,12 +85,20 @@ xmlns:plugins   ="sap.m.plugins" >
                             <OverflowToolbar   >
                                 <content>
                                 <ToolbarSpacer/>
-                                <Button text="Nuevo Pago" press="Nuevopago" icon="sap-icon://add" type="Emphasized" width="auto"/>
+                                <Button 
+                                id      ="NuevoPago"  
+                                enabled ="{=${DetallePlanilla>/dataPrincipal/status} !== 'Cerrado' }"
+                                text    ="Nuevo Pago" 
+                                press   ="Nuevopago" 
+                                icon    ="sap-icon://add" 
+                                type    ="Emphasized" 
+                                width   ="auto"/>
+
                                 </content>
                             </OverflowToolbar>
                         </headerToolbar>
 
-                            <columns>
+                            <columns  >
                                 <Column
                                     hAlign="Center"
                                     width="auto">
@@ -125,9 +136,15 @@ xmlns:plugins   ="sap.m.plugins" >
                                     <Text text="Vcto.Documento" />
                                 </Column>
 
+                                <Column
+                                    width="6rem"
+                                    hAlign="Center">
+                                    <Text text="" />
+                                </Column>
+
                             </columns>
                             <items>
-                                <ColumnListItem  press="OnPressHeader" vAlign="Middle" type="None">
+                                <ColumnListItem  press="OnPressHeader" vAlign="Middle" type="Active">
                                     <cells>
                                
                                         <Text
@@ -148,7 +165,24 @@ xmlns:plugins   ="sap.m.plugins" >
                                         <Text
                                             text="{DetallePlanilla>fecha_ven}" />
 
+                                        <HBox justifyContent="Center" alignItems="Center" >
 
+                                        <Button
+                                        press	=	"onPressModificar"
+                                        type	=	"Accept"
+                                        icon	=	"sap-icon://edit"
+                                        class   =   "sapUiTinyMarginEnd"
+                                        enabled =   "{=${DetallePlanilla>/dataPrincipal/status} !== 'Cerrado' }"
+                                        />
+
+                                        <Button
+                                        press	=	"onPressEliminar"
+                                        type	=	"Reject"
+                                        icon	=	"sap-icon://delete"
+                                        enabled =   "{=${DetallePlanilla>/dataPrincipal/status} !== 'Cerrado' }"
+                                        />
+
+                                        </HBox>
                                       
                                     </cells>
                                 </ColumnListItem>
@@ -159,12 +193,6 @@ xmlns:plugins   ="sap.m.plugins" >
 			</items>
 		</IconTabBar>
                         
-       
-
-                           
-
-
-					
 					</content>
 					<footer>
 					<Toolbar>
@@ -186,7 +214,8 @@ xmlns:plugins   ="sap.m.plugins" >
 							type	=	"Transparent"
 							press	=	"enviarSolicitud"
 							icon	=	"sap-icon://save"/> -->
-                <!-- <Button text="Cerrar Planilla" press="" type="Reject" icon="" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/> -->
+                <ToolbarSpacer/>
+                <Button text="Cerrar Planilla" press="OnPressCerarPlanilla" type="Reject" icon="" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
                             
 					</Toolbar>
 				</footer>

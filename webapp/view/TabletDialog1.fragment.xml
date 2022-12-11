@@ -1,35 +1,57 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" controllerName="cobranza.controller.PlanillaView2" xmlns="sap.m" xmlns:form="sap.ui.layout.form">
-    <TableSelectDialog
+    
+	<Dialog 
+    contentWidth="auto"
+    contentHeight="auto"
+    horizontalScrolling="true"
+    beforeOpen=""
+    afterOpen=""
+    showHeader="true" 
+	state="None"
+    stretch="false" 
+	title="Seleccionar Documento"
+	type="Standard" 
+	verticalScrolling="true">
+    <content>
+	<Table
 		id="TableDialogDoc"
 		noDataText="No Products Found"
-		title="Seleccionar Documento"
-		search=".handleSearch"
         items="{Reporte>/data}"
-		confirm=".handleConfirm"
-		cancel=".handleClose"
-        multiSelect="true"
+        mode="MultiSelect"
+		includeItemInSelection="true"
 		>
-		<ColumnListItem vAlign="Middle">
+
+		<headerToolbar>
+					<OverflowToolbar>
+						<SearchField liveChange="onSearchDocumentos" width="100%" placeholder="Busqueda por Documento | Ruc/Dni | Cliente"/>
+					</OverflowToolbar>
+		</headerToolbar>
+
+		<ColumnListItem vAlign="Middle"  >
 			<cells>
-               <Text text="{Reporte>documento}" />
-                <Text text="{Reporte>tipo_doc}" />
-                
-                <Text text="{Reporte>ruc_dni}" />
-                <Text text="{Reporte>cliente}"  />
-                <Text text="{Reporte>moneda}" />
-                <Text text="{Reporte>total_fac}" />
-                <Text text="{Reporte>saldo_pagar}" />
-                <Text text="{Reporte>imp_ret}" />
-                <Text text="{Reporte>fecha_emi}" />
-                <Text text="{Reporte>fecha_ven}" />
 
-               
-                <Text text="{Reporte>cond_pago}" />
+               	<Text text="{Reporte>documento}"	/>
+                <Text text="{Reporte>tipo_doc}"		/>
+                <Text text="{Reporte>ruc_dni}"		/>
+                <Text text="{Reporte>cliente}"		/>
+                <Text text="{Reporte>moneda}"		/>
+                <Text text="{Reporte>total_fac}"	/>
+                <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>saldo_pagar}"	/>
+                <Text text="{Reporte>imp_ret}"		/>
+                <Text text="{Reporte>fecha_emi}"	/>
+                <Text text="{Reporte>fecha_ven}"	/>
+                <Text text="{Reporte>cond_pago}"	/>
 				<ObjectStatus  state="{Reporte>dias_ven_State}" text="{Reporte>dias_ven}" icon="{Reporte>dias_ven_Icon}"  />
-                <ObjectStatus  state="Information" text="" icon="sap-icon://circle-task"  /> 
+                <ObjectStatus  state="Indication03" text="" icon="{Reporte>AgentRetencion}"  /> 
+				<Input   value="{Reporte>impCobrado}"  valueStateText="{Reporte>impCobradoStateText}" valueState="{Reporte>impCobradoState}" liveChange="isNumberKey" />
 
-
-				<Input value="{Reporte>impCobrado}" />
+				<!-- <StepInput
+				width="100%"
+				min="1"
+				largerStep="3"
+				max="{path:Reporte>saldo_pagar}"
+				value="{Reporte>impCobrado}"
+				/> -->
 
                  <!-- <CheckBox  select="true" enabled="true" valueState="Information" />  -->
 
@@ -42,8 +64,6 @@
                 <!-- <Text text="Pen" /> -->
                 <!-- sap-icon://border -->
               
-
-
 <!-- 
 				<ObjectIdentifier title="{Name}" text="{ProductId}" />
 				<Text text="{SupplierName}" />
@@ -64,9 +84,6 @@
 					unit="{CurrencyCode}" /> -->
 			</cells>
 		</ColumnListItem>
-
-       
-
 
 <!-- 
 				<ObjectIdentifier title="{Name}" text="{ProductId}" />
@@ -197,5 +214,13 @@
 			</Column>
 
 		</columns>
-	</TableSelectDialog>
+	</Table>
+	</content>
+
+	<buttons>
+            <Button text="Seleccionar"  press="handleConfirm"	type="Emphasized" icon="sap-icon://accept" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+            <Button text="Cancelar" 	press="handleClose" 	type="Default" icon="sap-icon://decline" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+    </buttons>
+
+	</Dialog>
 </core:FragmentDefinition>
