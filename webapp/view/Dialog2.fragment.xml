@@ -202,7 +202,7 @@ xmlns:u             ="sap.ui.unified">
                                                 <Label
                                                     text="Voucher" required="true" />
                                                 <ToolbarSpacer />
-                                                <u:FileUploader id="UploadSetDocumentos"  width  ="auto" multiple="true" name="myFileUpload" sameFilenameAllowed="true" icon="sap-icon://upload" change="handleUploadAdjuntos"
+                                                <u:FileUploader id="UploadSetDocumentos"   width  ="auto" multiple="true" name="myFileUpload" sameFilenameAllowed="true" icon="sap-icon://upload" change="handleUploadAdjuntos"
                                                 uploadUrl="upload/" buttonOnly="true" fileType="png,PNG,JPG,jpg,pdf,PDF" buttonText="Importar" tooltip=""
                                                 />
                                             </OverflowToolbar>

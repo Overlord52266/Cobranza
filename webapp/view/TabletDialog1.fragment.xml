@@ -35,9 +35,9 @@
                 <Text text="{Reporte>ruc_dni}"		/>
                 <Text text="{Reporte>cliente}"		/>
                 <Text text="{Reporte>moneda}"		/>
-                <Text text="{Reporte>total_fac}"	/>
+                <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>total_fac}"	/>
                 <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>saldo_pagar}"	/>
-                <Text text="{Reporte>imp_ret}"		/>
+                <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>imp_ret}"		/>
                 <Text text="{Reporte>fecha_emi}"	/>
                 <Text text="{Reporte>fecha_ven}"	/>
                 <Text text="{Reporte>cond_pago}"	/>

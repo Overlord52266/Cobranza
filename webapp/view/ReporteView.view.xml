@@ -267,11 +267,11 @@ xmlns:core      ="sap.ui.core"
                             <Text text="{Reporte>ruc_dni}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <!--<Text text="14052022" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
                             <Text text="{Reporte>moneda}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="{Reporte>total_fac}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="{Reporte>imp_ret}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>total_fac}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>imp_ret}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <!--<Text text="13.20" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
                             <!--<Text text="25.20" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>-->
-                            <Text text="{Reporte>pago_cuenta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>pago_cuenta}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <Text text="{=${Reporte>tipo_doc} === 'RG'?'-':''}{Reporte>saldo_pagar}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <Text text="{Reporte>fecha_emi}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                             <Text text="{Reporte>fecha_ven}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>

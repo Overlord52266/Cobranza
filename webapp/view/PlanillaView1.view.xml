@@ -25,11 +25,13 @@ xmlns:plugins   ="sap.m.plugins" >
 	</ObjectHeader>
 
         <Table 
-        id              ="TablePlanilla"
-		fixedLayout     ="Strict"
-		autoPopinMode   ="true"
-        items           ="{Planilla>/data}"
-		growing         ="true"
+        id              	="TablePlanilla"
+		fixedLayout     	="Strict"
+		autoPopinMode   	="true"
+        items           	="{Planilla>/data}"
+		growingScrollToLoad	="true"
+		sticky				="ColumnHeaders,HeaderToolbar"
+		growing         	="true"
         >
 
 		<dependents>
@@ -53,15 +55,15 @@ xmlns:plugins   ="sap.m.plugins" >
                 /> -->
 
                 	<DateRangeSelection
-                    id				="DRS4"
+                    id				="DateRangeEmision"
                     displayFormat	="MM/yyyy"
                     valueFormat		="MM-yyyy"
                     width			="auto"
-                    change			="handleChange"/>	
+                    change			="ChangeDateRange"/>	
 
 
 				<ToolbarSpacer/>
-                <SearchField   liveChange="SearchPlanilla" width="auto"/>
+                <SearchField  id="SeachPlanilla" liveChange="SearchPlanilla" width="auto"/>
                 </content>
 			</OverflowToolbar>
 		</headerToolbar>
@@ -144,12 +146,11 @@ xmlns:plugins   ="sap.m.plugins" >
                      <!-- <Text
 						text="{Planilla>importe_cobrado}" /> -->
 
-					 <ObjectNumber
+					<ObjectNumber
 					number="{Planilla>importe_cobrado}"
 					unit="PEN" />	
 
                     <ObjectStatus
-                    
                     icon="sap-icon://decline"
                     state="Error" />
 

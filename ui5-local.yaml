@@ -28,7 +28,7 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
         backend:
           - path: /sap
             url: http://life:44300
@@ -37,6 +37,9 @@ server:
           - path: /service/scim
             url: https://aijy7d89l.accounts.ondemand.com
             destination: API-USER-IAS
+          - path: /uploadfile
+            url: https://ecomm.sap.lifecorp.pe/
+            destination: API-DOCUMENTS
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:

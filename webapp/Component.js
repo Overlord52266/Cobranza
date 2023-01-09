@@ -5,9 +5,10 @@
 sap.ui.define([
         "sap/ui/core/UIComponent",
         "sap/ui/Device",
-        "cobranza/model/models"
+        "cobranza/model/models",
+        "sap/ui/core/routing/HashChanger"
     ],
-    function (UIComponent, Device, models) {
+    function (UIComponent, Device, models,HashChanger) {
         "use strict";
 
         return UIComponent.extend("cobranza.Component", {
@@ -24,15 +25,23 @@ sap.ui.define([
              * @override
              */
             init: function () {
-                // call the base component's init function
-                UIComponent.prototype.init.apply(this, arguments);
 
-                // enable routing
-                this.getRouter().initialize();
+                    var URLactual	= window.location.hash;
+                    
+                    if(!URLactual.includes("RouteMenu")) {
+                        HashChanger.getInstance().replaceHash("");	
+                    }
+                    // call the base component's init function
+                    UIComponent.prototype.init.apply(this, arguments);
 
-                // set the device model
-                this.setModel(models.createDeviceModel(), "device");
-            }
+                    // enable routing
+                    this.getRouter().initialize();
+
+                    // set the device model
+                    this.setModel(models.createDeviceModel(), "device");
+                   
+
+                }
         });
     }
 );

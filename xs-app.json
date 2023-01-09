@@ -8,7 +8,7 @@
       "authenticationType": "none",
       "destination": "ui5"
     },
-
+    
     {
       "source": "^/test-resources/(.*)$",
       "target": "/test-resources/$1",
@@ -25,19 +25,18 @@
 
     {
       "source": "^/sap/(.*)$",
-      "destination": "LIFE-DEV-110",
+      "destination": "LIVE-DEV-210",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
 
     {
-      "source": "^/uploadfile/(.*)$",
+      "source": "^/Documents/(.*)$",
+      "target": "$1",
       "destination": "API-DOCUMENTS",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
-
-    
 
     {
       "source": "^(.*)$",
