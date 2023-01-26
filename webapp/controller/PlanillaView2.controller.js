@@ -289,7 +289,7 @@ sap.ui.define([
                         // NroPlanilla+item2.documento+item2.pago_parcial+contador
                         let sendArchivo = {
                             "CO_FACTURA": item2.documento,
-                            "CO_PLANILLA": item2.planilla,
+                            "CO_PLANILLA": that.getClient() + item2.planilla,
                             "STATUS": "1",
                             "UNIQUE": item2.pago_parcial,
                             "NAME": items.Name.split(".")[0],
@@ -786,7 +786,7 @@ sap.ui.define([
                 if (SelectDetallePlanilla.medio_pago !== "DESCUENTO POR PLANILLA") {
                     let sendArchivo = {
                         "CO_FACTURA": SelectDetallePlanilla.documento,
-                        "CO_PLANILLA": SelectDetallePlanilla.planilla,
+                        "CO_PLANILLA":that.getClient() + SelectDetallePlanilla.planilla,
                         "STATUS": "2",
                         "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                         "NAME": dataArchivos[0].Name.split(".")[0],
@@ -821,7 +821,7 @@ sap.ui.define([
                         // SelectDetallePlanilla.planilla +SelectDetallePlanilla.documento + (parseFloat(SelectDetallePlanilla.pago_parcial)).toString() + SelectDetallePlanilla.contadorArchivo,
                         let sendArchivo = {
                             "CO_FACTURA": SelectDetallePlanilla.documento,
-                            "CO_PLANILLA": SelectDetallePlanilla.planilla,
+                            "CO_PLANILLA": that.getClient() +SelectDetallePlanilla.planilla,
                             "STATUS": "1",
                             "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                             "NAME": items.Name.split(".")[0],
@@ -1013,7 +1013,7 @@ sap.ui.define([
                 if (DetallePlanilla.medio_pago !== "DESCUENTO POR PLANILLA") {
                     let sendArchivo = {
                         "CO_FACTURA": DetallePlanilla.documento,
-                        "CO_PLANILLA": DetallePlanilla.planilla,
+                        "CO_PLANILLA": that.getClient() +DetallePlanilla.planilla,
                         "STATUS": "2",
                         "UNIQUE": (parseFloat(DetallePlanilla.pago_parcial)).toString(),
                         "NAME": "delete",

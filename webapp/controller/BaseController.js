@@ -8,7 +8,8 @@ sap.ui.define(
     "use strict";
     const UriSAP = "/sap/opu/odata/sap/ZOSFI_GW_TOMA_PEDIDO_SRV/";
     const hostname = location.hostname;
-    const Email = 'consultorscp1@omniasolution.com';
+    const Email = 'consultorscp1@omniasolution.com' //Se establece el correo para pruebas Local;
+    const Client = "300" // Se establece el mandante de la conexion del ERP para los Voucher(Documentos adjuntos) ;
     return BaseController.extend("cobranza.controller.BaseController", {
 
       getRouter: function () {
@@ -46,6 +47,11 @@ sap.ui.define(
         return Correo;
 
       },
+      
+      getClient : function (){
+
+        return Client;
+      },
       ConsultaPrincipal: async function () {
         const that = this;
         const oView = this.getView();
@@ -57,7 +63,7 @@ sap.ui.define(
         const UserLogin = oView.getModel("UserLogin");
 
         // const a=location.href;
-
+        // console.log(sap.ushell.services.UserInfo().getId())
         const Proyect = oView.getModel("Proyect");
         let idRefreshAuto = Proyect.getProperty("/idRefreshAuto");
         if (idRefreshAuto !== undefined) {
@@ -300,7 +306,7 @@ sap.ui.define(
         let sendArchivo =
         {
           "UNIQUE": (parseFloat(Documento.pago_parcial)).toString(),
-          "CO_PLANILLA": Documento.planilla,
+          "CO_PLANILLA": that.getClient()+Documento.planilla,
           "CO_FACTURA": Documento.documento
         }
 
