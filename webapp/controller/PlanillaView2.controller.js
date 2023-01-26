@@ -953,12 +953,12 @@ sap.ui.define([
                     async: true,
                     data: JSON.stringify(data1),
                     success: async function (data, textStatus, jqXHR) {
-                        await that.ConsultaPlanilla(NroPlanilla, true);
+                        await that.ConsultaPlanilla(NroPlanilla, false);
                         
                         // that.CleanDialog2Items();
                         // that.RegistrarPago333.close();
                         that.onClosedPago()
-                        // sap.ui.core.BusyIndicator.hide();
+                        sap.ui.core.BusyIndicator.hide();
                         MessageBox.success("Se actualizó existosamente", {
                             actions: [MessageBox.Action.OK],
                             emphasizedAction: MessageBox.Action.OK,
@@ -1090,7 +1090,8 @@ sap.ui.define([
                     async: true,
                     data: JSON.stringify(data),
                     success: async function (data, textStatus, jqXHR) {
-                        await that.ConsultaPlanilla(NroPlanilla, true);
+                        await that.ConsultaPlanilla(NroPlanilla, false);
+                        sap.ui.core.BusyIndicator.hide();
                         MessageBox.success("Se eliminó la Planilla con éxito");
                         that.RefreshAutomatico(undefined)
                     },

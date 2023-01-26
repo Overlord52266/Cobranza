@@ -90,13 +90,13 @@ sap.ui.define([
                 let Planilla = oEvent.getSource().getBindingContext("Planilla").getObject();
                 let DataDetallePlanilla = DetallePlanilla.setProperty("/data", JSON.parse(JSON.stringify(Planilla.DetallePlanilla)) );
                 DetallePlanilla.setProperty("/dataPrincipal",JSON.parse(JSON.stringify( Planilla )) );
-                var Global = oView.getModel("Global");
-                let contador = Global.getProperty("/ContView1");
+                // var Global = oView.getModel("Global");
+                // let contador = Global.getProperty("/ContView1");
                 // let cont = Global.getProperty("/ContView2");
 
-                if(contador === 1){
-                that.RefreshAutomatico(undefined);
-                }
+                // if(contador === 1){
+                // that.RefreshAutomatico(undefined);
+                // }
                 this.getRouter().navTo("RoutePlanillaView2");
             },
 

@@ -199,10 +199,7 @@ sap.ui.define(
         let ReporteCuentas  = Cuentas.filter(obj=> obj.tipo_doc !== "RG")
         that.estructuracionReporteCuentas(ReporteCuentas);
         }
-
-        sap.ui.core.BusyIndicator.hide();
         // await that.ConsultaReporteCuentas(undefined);
-        
         let DataReporte = Reporte.getProperty("/data");
         let DataReporteCopy = JSON.parse(JSON.stringify(DataReporte));
         Reporte.setProperty("/dataCopy",DataReporteCopy);
@@ -306,6 +303,9 @@ sap.ui.define(
         }
         var Archivos = oView.getModel("Archivos");
         Archivos.setProperty("/data", []);
+        if (Busy) {
+        sap.ui.core.BusyIndicator.hide();
+        }
         // console.log(ResultPlanilla);
       },
 
@@ -396,10 +396,13 @@ sap.ui.define(
         }
 
         if (oEvent !== undefined && !location.href.includes("RoutePlanillaView2")  ) {
-          await that.ConsultaPlanilla(undefined, true,undefined);
+          sap.ui.core.BusyIndicator.show(0);
+          await that.ConsultaPlanilla(undefined, false,undefined);
+          
         }
 
         if (!idRefreshAuto) {
+          sap.ui.core.BusyIndicator.hide();
           id = setInterval(async function () {
             const Uri = location.href.includes("RoutePlanillaView1");
             await that.ConsultaPlanilla(Uri ? undefined : DataDetallePlanilla.planilla, false,false);
@@ -407,6 +410,7 @@ sap.ui.define(
 
         } else {
           clearInterval(idRefreshAuto)
+          sap.ui.core.BusyIndicator.hide();
           id = setInterval(async function () {
             const Uri = location.href.includes("RoutePlanillaView1");
             await that.ConsultaPlanilla(Uri ? undefined : DataDetallePlanilla.planilla, false,false);

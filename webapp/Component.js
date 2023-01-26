@@ -44,7 +44,7 @@ function (UIComponent, Device, models,HashChanger) {
                 // oODataJSONModel.setProperty("ContView1",0)
                 // oODataJSONModel.setProperty("ContView2",0)
 
-                var Global = new sap.ui.model.json.JSONModel({ContView1 : 0} , {ContView2 : 0});
+                var Global = new sap.ui.model.json.JSONModel({ContView1 : 0,ContView2 : 0});
                 this.setModel(Global, 'Global');
                
 
