@@ -19,11 +19,12 @@
         items="{Reporte>/data}"
         mode="MultiSelect"
 		includeItemInSelection="true"
+		growing="true"  growingScrollToLoad="true" 
 		>
 
 		<headerToolbar>
 					<OverflowToolbar>
-						<SearchField liveChange="onSearchDocumentos" width="100%" placeholder="Busqueda por Documento | Ruc/Dni | Cliente"/>
+						<SearchField id="SearchFieldReporteDoc" liveChange="onSearchDocumentos" width="100%" placeholder="Busqueda por Documento | Ruc/Dni | Cliente"/>
 					</OverflowToolbar>
 		</headerToolbar>
 

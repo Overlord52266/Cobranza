@@ -47,7 +47,6 @@ sap.ui.define(
         return Correo;
 
       },
-      
       getClient : function (){
 
         return Client;
@@ -63,7 +62,7 @@ sap.ui.define(
         const UserLogin = oView.getModel("UserLogin");
 
         // const a=location.href;
-        // console.log(sap.ushell.services.UserInfo().getId())
+
         const Proyect = oView.getModel("Proyect");
         let idRefreshAuto = Proyect.getProperty("/idRefreshAuto");
         if (idRefreshAuto !== undefined) {
@@ -167,7 +166,7 @@ sap.ui.define(
         Reporte.setProperty("/data", data);
       },
 
-      ConsultaPlanilla: async function (NroPlanilla, Busy) {
+      ConsultaPlanilla: async function (NroPlanilla, Busy , CancelReport) {
         const that      = this;
         const oView     = this.getView();
         const Proyect   = oView.getModel("Proyect");
@@ -187,11 +186,20 @@ sap.ui.define(
         if (Busy) {
           sap.ui.core.BusyIndicator.show(0);
         }
-        let Result          = await Service.doGetMultiple([uriPlanilla, UriReporteCuentas]);
+        let SendConsults = [uriPlanilla, UriReporteCuentas];
+        if (CancelReport !== undefined  && !CancelReport ){
+          SendConsults.splice(1,1);
+        }
+
+        let Result          = await Service.doGetMultiple(SendConsults);
         let Planillas       = Result[0].d.results;
+
+        if (CancelReport === undefined ){
         let Cuentas         = Result[1].d.results;
         let ReporteCuentas  = Cuentas.filter(obj=> obj.tipo_doc !== "RG")
         that.estructuracionReporteCuentas(ReporteCuentas);
+        }
+
         sap.ui.core.BusyIndicator.hide();
         // await that.ConsultaReporteCuentas(undefined);
         
@@ -231,6 +239,10 @@ sap.ui.define(
         //   return acc;
         // }, []);
         //End--Agrupacion Planillas
+
+        groupedPlanilla.sort(function(a, b){
+          return parseFloat(b.planilla.split("-")[1])  - parseFloat(a.planilla.split("-")[1])  ;
+        });
 
         const InfoMediosPago = MedioPago.getProperty("/data");
         groupedPlanilla.map(function (obj) {
@@ -366,7 +378,7 @@ sap.ui.define(
 
       // },
 
-      RefreshAutomatico: function (oEvent) {
+      RefreshAutomatico: async function (oEvent) {
         const that = this;
         const oView = this.getView();
         const Proyect = oView.getModel("Proyect");
@@ -383,21 +395,21 @@ sap.ui.define(
           oView.byId("SeachPlanilla").setValue("");
         }
 
-        if (oEvent !== undefined && !location.href.includes("RoutePlanillaView2")) {
-          that.ConsultaPlanilla(undefined, true);
+        if (oEvent !== undefined && !location.href.includes("RoutePlanillaView2")  ) {
+          await that.ConsultaPlanilla(undefined, true,undefined);
         }
 
         if (!idRefreshAuto) {
           id = setInterval(async function () {
             const Uri = location.href.includes("RoutePlanillaView1");
-            await that.ConsultaPlanilla(Uri ? undefined : DataDetallePlanilla.planilla, false);
+            await that.ConsultaPlanilla(Uri ? undefined : DataDetallePlanilla.planilla, false,false);
           }, 3000);
 
         } else {
           clearInterval(idRefreshAuto)
           id = setInterval(async function () {
             const Uri = location.href.includes("RoutePlanillaView1");
-            await that.ConsultaPlanilla(Uri ? undefined : DataDetallePlanilla.planilla, false);
+            await that.ConsultaPlanilla(Uri ? undefined : DataDetallePlanilla.planilla, false,false);
           }, 3000);
         }
 

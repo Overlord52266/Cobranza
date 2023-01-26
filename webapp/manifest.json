@@ -87,66 +87,93 @@
             "": {
                 "dataSource": "mainService",
                 "preload": true,
-                "settings": {}
+                "settings": {
+                    "sizeLimit": 9999999999
+                }
             },
             "Reporte": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
+                
             },
             "MedioPago": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Status": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "BancoCuenta": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Banco": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Cuenta": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "UserLogin": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Planilla": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "DetallePlanilla": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Cliente": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Archivos": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             },
             "Proyect": {
                 "type": "sap.ui.model.json.JSONModel",
-                "settings": {},
+                "settings": {
+                    "sizeLimit": 9999999999
+                },
                 "preload": true
             }
         },

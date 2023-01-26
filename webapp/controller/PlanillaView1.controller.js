@@ -19,7 +19,12 @@ sap.ui.define([
             onAfterRendering: function () {
                 const that = this;
                 const oView = this.getView();
-                // var Proyect = oView.getModel("Proyect");
+                var Global = oView.getModel("Global");
+
+                let contador = Global.getProperty("/ContView1");
+
+                let cont = Global.getProperty("/ContView1",0)
+                // Proyect.setProperty("/ContView2",0)
 
 
                 // if(! hostname.includes("port")) {
@@ -27,9 +32,12 @@ sap.ui.define([
                 //     UriDomain =  jQuery.sap.getModulePath("cobranza")+UriDomain;
                 //     }
                 // }
-
+                if (cont === 0){
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("RoutePlanillaView1").attachPatternMatched(that.RefreshAutomatico, that);
+               
+                Global.setProperty("/ContView1",1);
+                }
                 const DateRangeEmision = oView.byId("DateRangeEmision");
                 DateRangeEmision.setMaxDate(new Date());
                 DateRangeEmision.addDelegate(
@@ -38,8 +46,6 @@ sap.ui.define([
                             DateRangeEmision.$().find('INPUT').attr('disabled', true).css('color', '#ccc');
                         }
                     }, DateRangeEmision);
-
-
 
                 // let dataInitial = 
                 // {
@@ -64,7 +70,7 @@ sap.ui.define([
                 const oView = this.getView();
                 const Proyect = oView.getModel("Proyect");
                 let idRefreshAuto = Proyect.getProperty("/idRefreshAuto");
-                if (idRefreshAuto === undefined) {
+                if (idRefreshAuto !== undefined) {
                     clearInterval(idRefreshAuto)
                 }
                 this.getRouter().navTo("RouteMenu");
@@ -74,12 +80,23 @@ sap.ui.define([
             OnPressHeader: function (oEvent) {
                 const that = this;
                 const oView = this.getView();
+                const Proyect = oView.getModel("Proyect");
                 const DetallePlanilla = oView.getModel("DetallePlanilla");
+                let idRefreshAuto = Proyect.getProperty("/idRefreshAuto");
+                if (idRefreshAuto !== undefined) {
+                    clearInterval(idRefreshAuto)
+                }
+
                 let Planilla = oEvent.getSource().getBindingContext("Planilla").getObject();
+                let DataDetallePlanilla = DetallePlanilla.setProperty("/data", JSON.parse(JSON.stringify(Planilla.DetallePlanilla)) );
+                DetallePlanilla.setProperty("/dataPrincipal",JSON.parse(JSON.stringify( Planilla )) );
+                var Global = oView.getModel("Global");
+                let contador = Global.getProperty("/ContView1");
+                // let cont = Global.getProperty("/ContView2");
 
-                let DataDetallePlanilla = DetallePlanilla.setProperty("/data", Planilla.DetallePlanilla);
-                DetallePlanilla.setProperty("/dataPrincipal", Planilla);
-
+                if(contador === 1){
+                that.RefreshAutomatico(undefined);
+                }
                 this.getRouter().navTo("RoutePlanillaView2");
             },
 
@@ -97,6 +114,7 @@ sap.ui.define([
                     MessageBox.error("Nose puede crear una Planilla,ya que existe una Planilla Vigente");
                     return;
                 }
+                
                 const data =
                 {
                     "crea": "X",
@@ -154,7 +172,8 @@ sap.ui.define([
                     url: that.GetUriBaseSAP(),
                     type: "GET",
                     headers: {
-                        "x-CSRF-Token": "Fetch"
+                        "x-CSRF-Token": "Fetch",
+                        "Sap-Client": "Fetch"
                     }
                 }).always(function (result, statusx, responsex) {
                     token = responsex.getResponseHeader("x-csrf-token");
@@ -171,7 +190,8 @@ sap.ui.define([
                     data: JSON.stringify(data),
                     success: async function (data, textStatus, jqXHR) {
                         const NumeroPlani = data.d.ResultadosSet.results[1].planilla;
-                        await that.ConsultaPlanilla(NumeroPlani, true);
+                        await that.ConsultaPlanilla(NumeroPlani, false, false);
+                        sap.ui.core.BusyIndicator.hide();
                         // that.RefreshAutomatico(undefined);
                         // let DataPlanillas = Planilla.getProperty("/data");
                         // let PlanillaFilter = DataPlanillas.filter(obj=> obj.planilla === NumeroPlani);

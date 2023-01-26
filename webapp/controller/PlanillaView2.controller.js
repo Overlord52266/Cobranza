@@ -22,7 +22,17 @@ sap.ui.define([
                 const that = this;
                 const oView = this.getView();
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.getRoute("RoutePlanillaView2").attachPatternMatched(that.RefreshAutomatico, that);
+
+                var Global = oView.getModel("Global");
+                let contador = Global.getProperty("/ContView1");
+                let cont = Global.getProperty("/ContView2");
+
+                if(cont === 0){
+                    oRouter.getRoute("RoutePlanillaView2").attachPatternMatched(that.RefreshAutomatico, that);
+                    Global.setProperty("/ContView2",1);
+                }
+
+                
                 var Proyect = oView.getModel("Proyect");
                 Proyect.setProperty("/ElementCobro", false);
                 Proyect.setProperty("/ElementBanco", false);
@@ -43,8 +53,8 @@ sap.ui.define([
                     }, date );
                 if (Object.keys(SelectDetallePlanilla).length === 0) {
                     const Documentos = DetallePlanilla.getProperty("/SelectTableDialogDocumentos");
-                    let ImpPagar = Documentos.map(obj => obj.impCobrado).reduce((acc, amount) => parseFloat(acc === '' ? 0 : acc) + parseFloat(amount === '' ? 0 : amount));
-                    sap.ui.getCore().byId("ImportePagar").setValue(parseFloat(ImpPagar).toFixed(2));
+                    let ImpPagar = Documentos.map(obj => obj.impCobrado).reduce((acc, amount) => parseFloat(acc === '' || acc === undefined ? 0 : acc) + parseFloat(amount === '' || amount === undefined ? 0 : amount));
+                    sap.ui.getCore().byId("ImportePagar").setValue( parseFloat(ImpPagar).toFixed(2) );
                 }
 
                 const Proyect = oView.getModel("Proyect");
@@ -152,8 +162,10 @@ sap.ui.define([
                 const that = this;
                 const oView = this.getView();
                 const DetallePlanilla = oView.getModel("DetallePlanilla");
+                const Reporte = oView.getModel("Reporte");
                 const Table = sap.ui.getCore().byId("TableDialogDoc");
-                let oItems = Table.getSelectedItems();
+                let oItems = Table.getSelectedContextPaths(); 
+                // getSelectedItems();
 
                 if (oItems === undefined || oItems.length === 0) {
                     MessageBox.error("Debe seleccionar almenos un Documento");
@@ -162,7 +174,8 @@ sap.ui.define([
 
                 let ValidErrors = false;
                 let Documentos = oItems.map(function (obj) {
-                    let Data = obj.getBindingContext("Reporte").getObject();
+                    // let Data = obj.getBindingContext("Reporte").getObject();
+                    let Data = Reporte.getProperty(obj);
                     if (Data.impCobradoState === "Error") {
                         ValidErrors = true
                     }
@@ -176,7 +189,9 @@ sap.ui.define([
                     return;
                 }
                 DetallePlanilla.setProperty("/SelectTableDialogDocumentos", Documentos);
-                Table.removeSelections()
+                sap.ui.getCore().byId("SearchFieldReporteDoc").setValue("");
+                sap.ui.getCore().byId("TableDialogDoc").getBinding("items").filter([]);
+                Table.removeSelections(true)
                 this.RegistrarPago.close();
 
                 if (!that.RegistrarPago333) {
@@ -299,11 +314,11 @@ sap.ui.define([
                         await jQuery.ajax({
                             type: "POST",
                             url: hostname.includes("port") ? "/uploadfile" : that.GetUriBase("/Documents/uploadfile"),
-                            timeout: 0,
                             headers: {
                                 "x-access-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImR",
                                 "Content-Type": "application/json"
                             }, async: true,
+                            timeout: 60000,
                             data: JSON.stringify(sendArchivo),
                             success: async function (data, textStatus, jqXHR) {
                                 console.log(data);
@@ -318,7 +333,8 @@ sap.ui.define([
                                 // }
                                 // });
                             }, error: function () {
-                                MessageBox.error("Ocurrio un error al obtener los datos");
+                                MessageBox.error("Ocurrio un error al subir los adjuntos , vuelva a intentarlo");
+                                sap.ui.core.BusyIndicator.hide();
                             }
                         });
                     }
@@ -366,15 +382,16 @@ sap.ui.define([
                         "x-CSRF-Token": token,
                         "Content-Type": "application/json"
                     },
+                    timeout: 60000,
                     async: true,
                     data: JSON.stringify(data1),
                     success: async function (data, textStatus, jqXHR) {
-                        await that.ConsultaPlanilla(NroPlanilla, true);
-                        that.RefreshAutomatico(undefined)
+                        await that.ConsultaPlanilla(NroPlanilla, false);
+                        
                         that.CleanDialog2Items();
                         that.RegistrarPago333.close();
 
-                        // sap.ui.core.BusyIndicator.hide();
+                        sap.ui.core.BusyIndicator.hide();
                         MessageBox.success("Se guardó existosamente", {
                             actions: [MessageBox.Action.OK],
                             emphasizedAction: MessageBox.Action.OK,
@@ -383,6 +400,8 @@ sap.ui.define([
                                 // that.oRouter.navTo("RoutePlanillaView2");
                             }
                         });
+
+                        that.RefreshAutomatico(undefined)
 
                     },
                     error: function () {
@@ -592,7 +611,11 @@ sap.ui.define([
                     obj.impCobrado = '';
                     obj.impCobradoState = "None";
                 });
-                Table.removeSelections()
+
+                // SearchFieldReporteDoc
+                sap.ui.getCore().byId("SearchFieldReporteDoc").setValue("");
+                sap.ui.getCore().byId("TableDialogDoc").getBinding("items").filter([]);
+                Table.removeSelections(true);
                 that.RefreshAutomatico(undefined);
                 this.RegistrarPago.close();
 
@@ -622,6 +645,12 @@ sap.ui.define([
                     onClose: async function (sAction) {
 
                         if (sAction === "Si") {
+
+                        let idRefreshAuto = Proyect.getProperty("/idRefreshAuto");
+                        if (idRefreshAuto !== undefined) {
+                            clearInterval(idRefreshAuto)
+                        }
+                        
                             const data =
                             {
                                 "update": "X",
@@ -683,7 +712,6 @@ sap.ui.define([
                                 token = responsex.getResponseHeader("x-csrf-token");
                             });
 
-
                             await jQuery.ajax({
                                 type: "POST",
                                 url: that.GetUriBaseSAP() + "CreaPlanillaSet",
@@ -695,6 +723,8 @@ sap.ui.define([
                                 async: true,
                                 data: JSON.stringify(data),
                                 success: async function (data, textStatus, jqXHR) {
+                                    that.getRouter().navTo("RoutePlanillaView1");
+                                    that.RefreshAutomatico(undefined);
                                     DetallePlanilla.setProperty("/dataPrincipal/status", "Cerrado");
                                     sap.ui.core.BusyIndicator.hide();
                                     MessageBox.success("Se Actualizó existosamente", {
@@ -786,7 +816,7 @@ sap.ui.define([
                 if (SelectDetallePlanilla.medio_pago !== "DESCUENTO POR PLANILLA") {
                     let sendArchivo = {
                         "CO_FACTURA": SelectDetallePlanilla.documento,
-                        "CO_PLANILLA":that.getClient() + SelectDetallePlanilla.planilla,
+                        "CO_PLANILLA": that.getClient() + SelectDetallePlanilla.planilla,
                         "STATUS": "2",
                         "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                         "NAME": dataArchivos[0].Name.split(".")[0],
@@ -797,7 +827,6 @@ sap.ui.define([
                     await jQuery.ajax({
                         type: "POST",
                         url: hostname.includes("port") ? "/uploadfile" : that.GetUriBase("/Documents/uploadfile"),
-                        timeout: 0,
                         headers: {
                             "x-access-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImR",
                             "Content-Type": "application/json"
@@ -832,7 +861,6 @@ sap.ui.define([
                         await jQuery.ajax({
                             type: "POST",
                             url: hostname.includes("port") ? "/uploadfile" : that.GetUriBase("/Documents/uploadfile"),
-                            timeout: 0,
                             headers: {
                                 "x-access-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImR",
                                 "Content-Type": "application/json"
@@ -926,7 +954,7 @@ sap.ui.define([
                     data: JSON.stringify(data1),
                     success: async function (data, textStatus, jqXHR) {
                         await that.ConsultaPlanilla(NroPlanilla, true);
-                        that.RefreshAutomatico(undefined)
+                        
                         // that.CleanDialog2Items();
                         // that.RegistrarPago333.close();
                         that.onClosedPago()
@@ -938,6 +966,8 @@ sap.ui.define([
                                 // that.oRouter.navTo("RoutePlanillaView2");
                             }
                         });
+
+                        that.RefreshAutomatico(undefined)
                     },
                     error: function () {
                         MessageBox.error("Ocurrio un error al obtener los datos");
@@ -1013,7 +1043,7 @@ sap.ui.define([
                 if (DetallePlanilla.medio_pago !== "DESCUENTO POR PLANILLA") {
                     let sendArchivo = {
                         "CO_FACTURA": DetallePlanilla.documento,
-                        "CO_PLANILLA": that.getClient() +DetallePlanilla.planilla,
+                        "CO_PLANILLA": that.getClient() + DetallePlanilla.planilla,
                         "STATUS": "2",
                         "UNIQUE": (parseFloat(DetallePlanilla.pago_parcial)).toString(),
                         "NAME": "delete",
@@ -1023,13 +1053,12 @@ sap.ui.define([
                     await jQuery.ajax({
                         type: "POST",
                         url: hostname.includes("port") ? "/uploadfile" : that.GetUriBase("/Documents/uploadfile"),
-                        timeout: 0,
                         headers: {
                             "x-access-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImR",
                             "Content-Type": "application/json"
                         }, async: true,
                         data: JSON.stringify(sendArchivo),
-                        success: async function (data, textStatus, jqXHR) {
+                        success:  function (data, textStatus, jqXHR) {
 
                         }, error: function () {
                             MessageBox.error("Ocurrio un error al obtener los datos");
@@ -1062,8 +1091,8 @@ sap.ui.define([
                     data: JSON.stringify(data),
                     success: async function (data, textStatus, jqXHR) {
                         await that.ConsultaPlanilla(NroPlanilla, true);
-                        that.RefreshAutomatico(undefined)
                         MessageBox.success("Se eliminó la Planilla con éxito");
+                        that.RefreshAutomatico(undefined)
                     },
                     error: function () {
                         MessageBox.error("Ocurrio un error al obtener los datos");
