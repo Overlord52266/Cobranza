@@ -97,8 +97,12 @@ xmlns:plugins   ="sap.m.plugins" >
 
 			<Column
 				width="auto"
+
 				hAlign="Center">
 				<Text text="Importe Total " />
+				<footer>
+                    <Text text="Total : {Planilla>/impTotal}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                 </footer>
 			</Column>
 
 

@@ -309,7 +309,7 @@ sap.ui.define([
                             "UNIQUE": item2.pago_parcial,
                             "NAME": items.Name.split(".")[0],
                             "EXTENSION": items.Name.split(".")[1],
-                            "FILE_LOB": "data:" + items.Type + ";base64," + items.Base64
+                            "FILE_LOB": items.Base64
                         }
                         await jQuery.ajax({
                             type: "POST",
@@ -318,7 +318,7 @@ sap.ui.define([
                                 "x-access-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImR",
                                 "Content-Type": "application/json"
                             }, async: true,
-                            timeout: 60000,
+                            timeout: 300000,
                             data: JSON.stringify(sendArchivo),
                             success: async function (data, textStatus, jqXHR) {
                                 console.log(data);
@@ -382,7 +382,6 @@ sap.ui.define([
                         "x-CSRF-Token": token,
                         "Content-Type": "application/json"
                     },
-                    timeout: 60000,
                     async: true,
                     data: JSON.stringify(data1),
                     success: async function (data, textStatus, jqXHR) {
@@ -821,7 +820,7 @@ sap.ui.define([
                         "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                         "NAME": dataArchivos[0].Name.split(".")[0],
                         "EXTENSION": dataArchivos[0].Name.split(".")[1],
-                        "FILE_LOB": dataArchivos[0].Type === undefined ? dataArchivos[0].Base64 : ("data:" + dataArchivos[0].Type + ";base64," + dataArchivos[0].Base64)
+                        "FILE_LOB": dataArchivos[0].Base64 
                     };
 
                     await jQuery.ajax({
@@ -832,10 +831,11 @@ sap.ui.define([
                             "Content-Type": "application/json"
                         }, async: true,
                         data: JSON.stringify(sendArchivo),
+                        timeout: 300000,
                         success: async function (data, textStatus, jqXHR) {
 
                         }, error: function () {
-                            MessageBox.error("Ocurrio un error al obtener los datos");
+                            MessageBox.error("Ocurrio un error en el adjunto ,por favor vuelva a intentarlo");
                             sap.ui.core.BusyIndicator.hide();
                         }
                     });
@@ -855,7 +855,7 @@ sap.ui.define([
                             "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                             "NAME": items.Name.split(".")[0],
                             "EXTENSION": items.Name.split(".")[1],
-                            "FILE_LOB": items.Type === undefined ? items.Base64 : ("data:" + items.Type + ";base64," + items.Base64)
+                            "FILE_LOB": items.Base64 
                         }
 
                         await jQuery.ajax({
@@ -866,13 +866,15 @@ sap.ui.define([
                                 "Content-Type": "application/json"
                             }, async: true,
                             data: JSON.stringify(sendArchivo),
+                            timeout: 300000,
                             success: async function (data, textStatus, jqXHR) {
                                 console.log(data);
 
                                 SelectDetallePlanilla.doc_adjunto = data.url;
 
                             }, error: function () {
-                                MessageBox.error("Ocurrio un error al obtener los datos");
+                                sap.ui.core.BusyIndicator.hide();
+                                MessageBox.error("Ocurrio un error en el adjunto ,por favor vuelva a intentarlo");
                             }
                         });
 
@@ -1058,10 +1060,11 @@ sap.ui.define([
                             "Content-Type": "application/json"
                         }, async: true,
                         data: JSON.stringify(sendArchivo),
+                        timeout: 300000,
                         success:  function (data, textStatus, jqXHR) {
 
                         }, error: function () {
-                            MessageBox.error("Ocurrio un error al obtener los datos");
+                            MessageBox.error("Ocurrio un error en el adjunto ,por favor vuelva a intentarlo");
                             sap.ui.core.BusyIndicator.hide();
                         }
                     });
@@ -1159,24 +1162,70 @@ sap.ui.define([
                 return new Promise((resolve, reject) => {
                     var Document;
                     var reader = new FileReader();
+                    reader.readAsDataURL(file);
                     reader.onload = async function (evt) {
                         try {
-                            var base64Index = base64_marker.length;
-                            var base64 = evt.target.result.substring(base64Index);
-                            // .substring(base64Index);
-                            Document = {
-                                "Type": file.type,
-                                "Name": file.name,
-                                "File": file,
-                                "Base64": base64,
-                                "Result": reader.result
-                            };
-                            resolve(Document);
+
+                            if (  !file.type.includes("pdf")  ){
+                            let Base64='';   
+                            const img = new Image();
+                            img.src = reader.result;
+                            img.onload = await function() {
+                                const canvas = document.createElement("canvas");
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                const ctx = canvas.getContext("2d");
+                                ctx.drawImage(img, 0, 0);
+                                const dataURL = canvas.toDataURL("image/png");
+                                console.log(dataURL)
+                                // const downloadLink = document.createElement("a");
+                                    // const fileName = NombreArchivo;
+                                    // document.body.appendChild(image);
+
+                                    // downloadLink.href = dataURL;
+                                    // downloadLink.download = "hola.png";
+                                    // downloadLink.click();
+                                    
+                                Base64=dataURL;
+                                // var base64Index = base64_marker.length;
+                                // Base64 = Base64.substring(base64Index);
+                                console.log(dataURL);
+                                
+                                // .substring(base64Index);
+                                let name= file.name.split(".")
+                                Document = {
+                                    "Type": "image/png",//file.type
+                                    "Name": file.name.replace(/jpg|jpeg/i,"png"),
+                                    "File": file,
+                                    "Base64": Base64,
+                                    "Result": reader.result
+                                };
+                                resolve(Document);
+                                };
+                            }
+                            else  
+                            {
+                                // var base64Index = base64_marker.length;
+                                let base64 = evt.target.result;
+                                Document = {
+                                    "Type": file.type,
+                                    "Name": file.name,
+                                    "File": file,
+                                    "Base64": base64,
+                                    "Result": reader.result
+                                };
+                                resolve(Document);
+
+                            }   
+
+
+
                         } catch (err) {
                             reject(err);
                         }
+
                     }
-                    reader.readAsDataURL(file);
+                    // reader.readAsDataURL(file);
                 });
             },
 
@@ -1190,11 +1239,11 @@ sap.ui.define([
                 var data = model.getProperty(sPath);
                 let Base64 = data.Base64;
                 let NombreArchivo = data.Name;
-                if (data.Type !== undefined) {
+                // if (data.Type !== undefined) {
                     // let Base64          = data.Base64;
-                    Base64 = "data:" + data.Type.toLowerCase() + ";base64," + Base64
+                    // Base64 = "data:" + data.Type.toLowerCase() + ";base64," + Base64
                     // window.open(data.Result)
-                }
+                // }
                 const downloadLink = document.createElement("a");
                 const fileName = NombreArchivo;
                 // document.body.appendChild(image);
@@ -1224,11 +1273,11 @@ sap.ui.define([
                 let Search = oEvent.getSource().getValue();
 
                 // var Number = oEvent.getSource().getValue();
-                oEvent.getSource().setValue(Search.replace(" ","") );
+                oEvent.getSource().setValue(Search );
 
-                let aFilter1 = new sap.ui.model.Filter("documento", sap.ui.model.FilterOperator.Contains, Search.replace(" ", ""));
-                let aFilter2 = new sap.ui.model.Filter("ruc_dni", sap.ui.model.FilterOperator.Contains, Search.replace(" ", ""));
-                let aFilter3 = new sap.ui.model.Filter("cliente", sap.ui.model.FilterOperator.Contains, Search.replace(" ", ""));
+                let aFilter1 = new sap.ui.model.Filter("documento", sap.ui.model.FilterOperator.Contains, Search);
+                let aFilter2 = new sap.ui.model.Filter("ruc_dni", sap.ui.model.FilterOperator.Contains, Search);
+                let aFilter3 = new sap.ui.model.Filter("cliente", sap.ui.model.FilterOperator.Contains, Search);
                 var allFilter = new sap.ui.model.Filter([aFilter1, aFilter2, aFilter3], false);
                 // sap.ui.getCore().byId("TableDialogDoc");
                 sap.ui.getCore().byId("TableDialogDoc").getBinding("items").filter(allFilter);
