@@ -9,7 +9,7 @@ sap.ui.define(
     const UriSAP = "/sap/opu/odata/sap/ZOSFI_GW_TOMA_PEDIDO_SRV/";
     const hostname = location.hostname;
     const Email = 'consultorscp1@omniasolution.com' //Se establece el correo para pruebas Local;
-    const Client = "300" // PRD (300) QAS (210) Se establece el mandante de la conexion del ERP para los Voucher(Documentos adjuntos) ;
+    const Client = "210" // PRD (300) QAS (210) Se establece el mandante de la conexion del ERP para los Voucher(Documentos adjuntos) ;
     return BaseController.extend("cobranza.controller.BaseController", {
 
       getRouter: function () {

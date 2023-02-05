@@ -298,32 +298,45 @@ sap.ui.define([
                 // const Proyect       = oView.getModel("Proyect"); 
                 // let idRefreshAuto = Proyect.getProperty("/idRefreshAuto");
                 // clearInterval(idRefreshAuto)
-                for (let items of dataArchivos) {
-                    for (let item2 of Documentos) {
+                // for (let items of dataArchivos) {
+
+
+                    // for (let item2 of Documentos) {
+
                         // item2.nombre_arch += contador.toString()+"\\" ;
                         // NroPlanilla+item2.documento+item2.pago_parcial+contador
                         let sendArchivo = {
-                            "CO_FACTURA": item2.documento,
-                            "CO_PLANILLA": that.getClient() + item2.planilla,
+                            "CO_FACTURA":  (Documentos.map(obj=> obj.documento)).join("$")  ,
+                            "CO_PLANILLA": (Documentos.map(obj=> that.getClient()+ obj.planilla)).join("$"),
                             "STATUS": "1",
-                            "UNIQUE": item2.pago_parcial,
-                            "NAME": items.Name.split(".")[0],
-                            "EXTENSION": items.Name.split(".")[1],
-                            "FILE_LOB": items.Base64
+                            "UNIQUE": (Documentos.map(obj=> obj.pago_parcial)).join("$"),
+                            "NAME": (Documentos.map(obj=>  dataArchivos[0].Name.split(".")[0] )).join("$") ,
+                            "EXTENSION": (Documentos.map(obj=>  dataArchivos[0].Name.split(".")[1] )).join("$"),
+                            "CONTADOR": Documentos.length+"",
+                            "FILE_LOB": dataArchivos[0].Base64
                         }
-                        await jQuery.ajax({
+                       
+                    // }
+                    // contador++;
+                // }
+                
+                // Documentos.map(function(obj){
+                //     obj.nombre_arch+= "\\"+ contador ;
+                // });
+                await jQuery.ajax({
                             type: "POST",
                             url: hostname.includes("port") ? "/uploadfile" : that.GetUriBase("/Documents/uploadfile"),
                             headers: {
                                 "x-access-token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImR",
                                 "Content-Type": "application/json"
                             }, async: true,
-                            timeout: 300000,
+                            timeout: 3000000,
                             data: JSON.stringify(sendArchivo),
                             success: async function (data, textStatus, jqXHR) {
                                 console.log(data);
-                                item2.doc_adjunto = data.url;
-                                // Documentos.map(function(obj){
+                                // item2.doc_adjunto = data.data;
+                                Documentos.map(function(obj,index){
+                                obj.doc_adjunto = data.data[index].url ;   
                                 // if(item2.nombre_arch === undefined){
                                 //     item2.nombre_arch = sendArchivo.NAME + "." +sendArchivo.EXTENSION;
                                 //     item2.doc_adjunto   = data.url.replace("=","");
@@ -331,18 +344,13 @@ sap.ui.define([
                                 //     item2.nombre_arch += "\n"+sendArchivo.NAME + "."+sendArchivo.EXTENSION;
                                 //     item2.doc_adjunto   += "\n"+data.url.replace("=","");
                                 // }
-                                // });
+                                });
                             }, error: function () {
                                 MessageBox.error("Ocurrio un error al subir los adjuntos , vuelva a intentarlo");
                                 sap.ui.core.BusyIndicator.hide();
                             }
                         });
-                    }
-                    // contador++;
-                }
-                // Documentos.map(function(obj){
-                //     obj.nombre_arch+= "\\"+ contador ;
-                // });
+
                 const data1 =
                 {
                     "update": "X",
@@ -817,6 +825,7 @@ sap.ui.define([
                         "CO_FACTURA": SelectDetallePlanilla.documento,
                         "CO_PLANILLA": that.getClient() + SelectDetallePlanilla.planilla,
                         "STATUS": "2",
+                        "CONTADOR" :"1",
                         "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                         "NAME": dataArchivos[0].Name.split(".")[0],
                         "EXTENSION": dataArchivos[0].Name.split(".")[1],
@@ -831,7 +840,7 @@ sap.ui.define([
                             "Content-Type": "application/json"
                         }, async: true,
                         data: JSON.stringify(sendArchivo),
-                        timeout: 300000,
+                        timeout: 3000000,
                         success: async function (data, textStatus, jqXHR) {
 
                         }, error: function () {
@@ -840,7 +849,7 @@ sap.ui.define([
                         }
                     });
 
-                    let UltimoIndice = 0;
+                    // let UltimoIndice = 0;
                     for (let items of dataArchivos) {
 
                         if (items.Base64 === undefined) {
@@ -852,6 +861,7 @@ sap.ui.define([
                             "CO_FACTURA": SelectDetallePlanilla.documento,
                             "CO_PLANILLA": that.getClient() +SelectDetallePlanilla.planilla,
                             "STATUS": "1",
+                            "CONTADOR":"1",
                             "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                             "NAME": items.Name.split(".")[0],
                             "EXTENSION": items.Name.split(".")[1],
@@ -866,11 +876,11 @@ sap.ui.define([
                                 "Content-Type": "application/json"
                             }, async: true,
                             data: JSON.stringify(sendArchivo),
-                            timeout: 300000,
+                            timeout: 3000000,
                             success: async function (data, textStatus, jqXHR) {
                                 console.log(data);
 
-                                SelectDetallePlanilla.doc_adjunto = data.url;
+                                SelectDetallePlanilla.doc_adjunto = data.data[0].url;
 
                             }, error: function () {
                                 sap.ui.core.BusyIndicator.hide();
@@ -1047,6 +1057,7 @@ sap.ui.define([
                         "CO_FACTURA": DetallePlanilla.documento,
                         "CO_PLANILLA": that.getClient() + DetallePlanilla.planilla,
                         "STATUS": "2",
+                        "CONTADOR":"1",
                         "UNIQUE": (parseFloat(DetallePlanilla.pago_parcial)).toString(),
                         "NAME": "delete",
                         "EXTENSION": "delete",
@@ -1060,7 +1071,7 @@ sap.ui.define([
                             "Content-Type": "application/json"
                         }, async: true,
                         data: JSON.stringify(sendArchivo),
-                        timeout: 300000,
+                        timeout: 3000000,
                         success:  function (data, textStatus, jqXHR) {
 
                         }, error: function () {
