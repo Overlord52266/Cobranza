@@ -10,7 +10,7 @@ xmlns="sap.m">
 					<Title />
 					<!--<Button text="Main Screen" class="pruebaasd" type="Emphasized" press="BackPage1" icon="sap-icon://home" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>-->
 					<!-- </ToolbarSpacer> -->
-					<Label text="v3.0"></Label>
+					<Label text="v3.1"></Label>
 
 					</headerContent>
 					
