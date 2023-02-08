@@ -93,7 +93,7 @@ sap.ui.define([
                     sap.ui.getCore().byId("DateVoucher").setValue(fechaVaucher === "" ? "" : fechaVaucher.substring(6, 8) + "/" + fechaVaucher.substring(4, 6) + "/" + fechaVaucher.substring(0, 4));
                     sap.ui.getCore().byId("Cheque").setValue(SelectDetallePlanilla.nro_cheque);
                     sap.ui.getCore().byId("Operacion").setValue(SelectDetallePlanilla.nro_oper);
-                    sap.ui.getCore().byId("ImportePagar").setEnabled(true);
+                    sap.ui.getCore().byId("ImportePagar").setEnabled(false);
                     sap.ui.getCore().byId("RegistrarPago").setVisible(false);
                     sap.ui.getCore().byId("ActualizarPago").setVisible(true);
                     await that.consultaArchivos(SelectDetallePlanilla);
