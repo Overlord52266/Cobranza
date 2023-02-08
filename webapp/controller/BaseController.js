@@ -291,7 +291,11 @@ sap.ui.define(
           obj.DetallePlanilla = JSON.parse(JSON.stringify(DetallePlanillas));
         });
 
-        let impTotalPlanilla = groupedPlanilla.map(obj1 => parseFloat(obj1.importe_cobrado)).reduce((acc, amount) => acc + amount)
+
+        let impTotalPlanilla = "0.00"
+        if (groupedPlanilla.length !== 0){
+          impTotalPlanilla= groupedPlanilla.map(obj1 => parseFloat(obj1.importe_cobrado)).reduce((acc, amount) => acc + amount)
+        }
         Planilla.setProperty("/impTotal", (parseFloat(impTotalPlanilla)).toFixed(2));
 
         let dataPlanillas = Planilla.getProperty("/data")
