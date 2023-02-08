@@ -305,6 +305,7 @@ sap.ui.define([
 
                         // item2.nombre_arch += contador.toString()+"\\" ;
                         // NroPlanilla+item2.documento+item2.pago_parcial+contador
+                if(dataMedioPago !== "H"){
                         let sendArchivo = {
                             "CO_FACTURA":  (Documentos.map(obj=> obj.documento)).join("$")  ,
                             "CO_PLANILLA": (Documentos.map(obj=> that.getClient()+ obj.planilla)).join("$"),
@@ -350,6 +351,7 @@ sap.ui.define([
                                 sap.ui.core.BusyIndicator.hide();
                             }
                         });
+                    }
 
                 const data1 =
                 {
@@ -820,15 +822,15 @@ sap.ui.define([
                 // clearInterval(idRefreshAuto)
                 sap.ui.core.BusyIndicator.show(0);
                 // let contador = 1
-                if (SelectDetallePlanilla.medio_pago !== "DESCUENTO POR PLANILLA") {
-                    let sendArchivo = {
+
+                let sendArchivo = {
                         "CO_FACTURA": SelectDetallePlanilla.documento,
                         "CO_PLANILLA": that.getClient() + SelectDetallePlanilla.planilla,
                         "STATUS": "2",
                         "CONTADOR" :"1",
                         "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
-                        "NAME": dataArchivos[0].Name.split(".")[0],
-                        "EXTENSION": dataArchivos[0].Name.split(".")[1],
+                        "NAME": "delete",
+                        "EXTENSION": "delete",
                         "FILE_LOB": "delete" 
                     };
 
@@ -848,6 +850,8 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                         }
                     });
+
+                if (DescMedioPago.via !== "H") {
 
                     // let UltimoIndice = 0;
                     for (let items of dataArchivos) {
