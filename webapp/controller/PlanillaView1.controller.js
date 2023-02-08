@@ -100,7 +100,7 @@ sap.ui.define([
                 this.getRouter().navTo("RoutePlanillaView2");
             },
 
-            onPress: async function () {
+            onPressNuevaPlanilla: async function () {
                 const that = this;
                 const oView = this.getView();
                 const Planilla = oView.getModel("Planilla");

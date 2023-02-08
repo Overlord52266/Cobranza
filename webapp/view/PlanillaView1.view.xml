@@ -179,7 +179,7 @@ xmlns:plugins   ="sap.m.plugins" >
     <footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button type="Emphasized" text="Nueva Planilla" icon="sap-icon://add" press="onPress" />
+				<Button type="Emphasized" text="Nueva Planilla" icon="sap-icon://add" press="onPressNuevaPlanilla" />
 			</Toolbar>
 		</footer>
     </Page>

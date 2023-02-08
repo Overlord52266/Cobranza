@@ -829,7 +829,7 @@ sap.ui.define([
                         "UNIQUE": (parseFloat(SelectDetallePlanilla.pago_parcial)).toString(),
                         "NAME": dataArchivos[0].Name.split(".")[0],
                         "EXTENSION": dataArchivos[0].Name.split(".")[1],
-                        "FILE_LOB": dataArchivos[0].Base64 
+                        "FILE_LOB": "delete" 
                     };
 
                     await jQuery.ajax({
