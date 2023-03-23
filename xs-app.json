@@ -25,7 +25,7 @@
 
     {
       "source": "^/sap/(.*)$",
-      "destination": "LIVE-DEV-210",
+      "destination": "LIFE-PRD",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
